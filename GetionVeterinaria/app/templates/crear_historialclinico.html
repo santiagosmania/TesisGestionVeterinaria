@@ -1,0 +1,161 @@
+{% extends 'layout.html' %} 
+{% load static %} 
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/crearhist.css' %}"
+    />
+    <title>Crear Historial Clinico</title>
+  </head>
+
+  <body>
+    <form method="POST" action="{% url 'crear_historialclinico' %}" class="frm">
+      {% csrf_token %}
+
+     
+      <h2>DATOS DEL PACIENTE</h2>
+      <br />
+      <br />
+      <label for="nombre">Nombre</label>
+      <input type="text" name="nombre"  class="txt"  id="nombre" required />
+      <span id="nombre-exist" style="color: red"></span>
+    
+      <label for="sexo" >Sexo</label>
+   
+        F <input type="radio" value="F" name="sexo"  /> 
+        M <input type="radio" value="M"  class="txt" name="sexo" /> 
+    
+
+      <label for="especie">Especie</label>
+      <input type="text" name="especie"  class="txt" id="especie" required />
+
+      <br>
+      <br />
+      <br />
+
+      <label for="raza">raza</label>
+      <input type="text" name="raza"  class="txt" id="raza" required />
+
+      <label for="fechana">Fecha de Nacimiento</label>
+      <input type="text" name="fechana"  class="txt" id="fechana" required />
+
+      <label for="peso">peso</label>
+      <input type="text" name="peso"  class="txt" id="peso" required />
+
+      <br />
+      <br />
+      <br />
+      <br />
+
+      
+      <h2>ANAMNESICOS</h2>
+    
+      <br />
+      <br />
+    
+      <label for="ultdesp">ULTIMA DESPARACITACION</label>
+      <input type="text" name="ultdesp" class="txt" id="ultdesp" required />
+
+      <label for="producto">PRODUCTO</label>
+      <input type="text" name="producto" class="txt" id="producto" required />
+
+      <br />
+      <br />
+
+      <label for="vacunas">VACUNAS</label>
+      <input type="text" name="vacunas"  class="txt" id="vacunas" required />
+
+      <label for="marca"> MARCA </label>
+      <input type="text" name="marca"  class="txt" id="marca" required />
+
+      <label for="lote">LOTE</label>
+      <input type="text" name="lote"  class="txt" id="lote" required />
+
+      <br />
+      <br />
+
+      <br>
+      <br>
+   
+      <h2>HISTORIA REPRODUCTIVA</h2>
+    
+      <br>
+      <br>
+      <label for="ultimocelo">ULTIMO CELO</label>
+      <input type="text" name="ultimocelo" class="txt" id="ultimocelo" required />
+
+      <label for="fechultpart">FECHA ULTIMO PARTO</label>
+      <input type="text" name="fechultpart"  class="txt" id="fechultpart" required />
+
+      <label for="estilirizado">ESTERILIZADO</label>
+      SI <input type="radio" value="si" name="est" /> 
+      NO <input type="radio" value="no" class="txt" name="est" /> 
+
+      <br />
+      <br />
+      <br>
+      <br>
+      <h2>MOTIVO DE CONSULTA</h2>
+      <br>
+      <br>
+      
+      <textarea name="" id="motcons" cols="100" rows="10"></textarea>
+
+      <br />
+      <br />
+
+
+      <h2>EXAMEN CLINICO</h2>
+
+      <br />
+      <br />
+
+      <label for="ganglios">GANGLIOS</label>
+      <input type="text" name="ganglios" class="txt" id="ganglios" required />
+
+      <label for="respiratoria">RESPIRATORIA</label>
+      <input type="text" name="respiratoria" class="txt" id="respiratoria" required />
+
+      <label for="cardiaca">CARDIACA</label>
+      <input type="text" name="cardiaca" class="txt" id="cardiaca" required />
+      
+      <br>
+      <br>
+      
+      
+      <label for="mucosa">MUCOSAS</label>
+      <input type="text" name="mucosa"  class="txt" id="mucosa" required />
+
+      <label for="temperatura">TEMPERATURA</label>
+      <input type="text" name="temperatura" class="txt" id="temperatura" required />
+
+      <label for="pulso">PULSO</label>
+      <input type="text" name="pulso" class="txt" id="pulso" required />
+
+
+      <br />
+      <br />
+
+      <br>
+      <br>
+      <h2>DESCRIPCION DE HALLAZGO</h2>
+      <br>
+      <br>
+
+      <textarea name="" id="motcons" cols="100" rows="10"></textarea>
+
+      <br>
+      <br>
+      <input type="submit" name="accion" class="btn" value="Agregar" />
+    </form>
+    <script src="{% static 'js/verificar_dni_nombre.js' %}"></script>
+  </body>
+</html>
+
+{%endblock%}

@@ -1,0 +1,4 @@
+2023-07-20 16:02:01,888 - INFO - C:\Users\santi\OneDrive\Escritorio\Sistema Gestion Veterinaria\GetionVeterinaria\app\views.py changed, reloading.
+2023-07-20 16:02:47,902 - INFO - Processed Input: []
+2023-07-20 16:02:54,878 - INFO - Processed Input: []
+2023-07-20 16:03:32,438 - INFO - C:\Users\santi\OneDrive\Escritorio\Sistema Gestion Veterinaria\GetionVeterinaria\app\views.py changed, reloading.

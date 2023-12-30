@@ -1,0 +1,145 @@
+h1 {
+    text-align: center;
+
+}
+
+html,
+body {
+    height: 200%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: linear-gradient(to top, #ff6600, #ff9933);
+    max-height: 0%;
+    /* Establecer una altura máxima, ajusta el valor según tus necesidades */
+    margin: 0 auto;
+    /* Centrar verticalmente en la ventana del navegador */
+    overflow-y: auto;
+    /* Agregar barras de desplazamiento vertical si el contenido supera la altura máxima */
+}
+
+
+
+.btn {
+    border-radius: 10px;
+    width: 450px;
+    height: 65px;
+    text-align: center;
+    border-radius: 20px;
+    background: rgb(177, 173, 173);
+}
+
+
+
+.cuadrado {
+    width: 600px;
+    /* Ancho del cuadrado */
+    height: 600px;
+    /* Altura del cuadrado */
+    border-radius: 20px;
+    /* Borde redondeado */
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgb(48, 47, 47);
+    /* Color negro */
+
+}
+
+.form-container {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 200px;
+}
+
+
+/* Ajustar el texto del marcador de posición */
+::placeholder {
+    text-align: center;
+
+}
+
+
+
+
+
+
+
+
+.btn:hover {
+    background-color: orange;
+}
+
+#log {
+
+    color: white;
+}
+
+
+.label {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+.lbmost {
+    color: white;
+
+}
+
+.form-container .us {
+
+
+    border-radius: 10px;
+    width: 450px;
+    height: 65px;
+    background-size: 20%;
+    
+    background-repeat: no-repeat;
+    text-align: center;
+
+    background-image: url('../../static/img/usuario.png');
+
+
+}
+
+
+.form-container .con {
+
+
+    border-radius: 10px;
+    width: 450px;
+    height: 65px;
+   
+    background-size: 17%;
+    text-align: center;
+
+    background-repeat: no-repeat;
+    background-image: url('../../static/img/contraseña.png');
+
+
+}
+
+
+.imagen img{
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 46%; /* O ajusta el ancho según tus necesidades */
+    z-index: 0;
+
+    transform: translate(52%, 20%)
+    
+}
+
+h2{
+    text-align: center;
+    color: white;
+}

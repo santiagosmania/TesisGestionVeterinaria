@@ -1,0 +1,86 @@
+{% extends 'layout.html' %}
+{% load static %}
+<!-- se ponen en cada clase nombres a cada control de la interfaz para poder llamarlo en la view o 
+constructores -->
+<!-- el valor que es que estoy obteniendo de la view o vista o constructor
+tiene que coincidir con el value de la lista desplegable -->
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/modificar_pacientes.css' %}">
+    <title>Modificar Pacientes</title>
+</head>
+<body>
+    <form method="POST" action="{% url 'modificar_pacientes' %}" class="frm">
+        {% csrf_token %}
+        <label for="idpaciente">ID</label>
+        <select name="idpaciente" id="idpaciente">
+            {% for dato in datos %}
+            <option value="{{ dato.idpaciente }}">{{ dato.idpaciente }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="dni">DNI</label>
+        <input type="text" name="dni" value="{% if paciente and paciente.dni %}{{ paciente.dni.dni }}{% endif %}">
+        <br>
+        <br>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" value="{% if paciente %}{{ paciente.nombre }}{% endif %}">
+        <br>
+        <br>
+        <label for="raza">Raza</label>
+        <select name="idraza" id="idraza">
+            {% for datoraza in datosraza %}
+            <option value="{{ datoraza.idraza }}" {% if paciente and paciente.idraza == datoraza %}selected{% endif %}>{{ datoraza.raza }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="especie">Especie</label>
+        <select name="idespecie" id="idespecie">
+            {% for datoespecie in datosespecie %}
+            <option value="{{ datoespecie.idespecie }}" {% if paciente and paciente.idespecie == datoespecie %}selected{% endif %}>{{ datoespecie.especie }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="sexo">Sexo</label>
+        <input type="radio" value="F" name="sexo" {% if paciente and paciente.sexo == 'F' %}checked{% endif %}> F
+        <input type="radio" value="M" name="sexo" {% if paciente and paciente.sexo == 'M' %}checked{% endif %}> M
+        <br>
+        <br>
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado">
+            <option value="habilitado" {% if paciente and paciente.estado == 'habilitado' %}selected{% endif %}>Habilitado</option>
+            <option value="deshabilitado" {% if paciente and paciente.estado == 'deshabilitado' %}selected{% endif %}>Deshabilitado</option>
+        </select>
+        <br>
+        <br>
+        <label for="particulares">Señales Particulares</label>
+        <input type="text" name="seniaspart" value="{% if paciente %}{{ paciente.seniaspart }}{% endif %}">
+        <br>
+        <br>
+        <label for="chip">Chip</label>
+        <input type="text" name="chip" value="{% if paciente %}{{ paciente.chip }}{% endif %}">
+        <br>
+        <br>
+        <label for="fechana">Fecha de nacimiento</label>
+        <input type="text" name="fechana" value="{% if paciente %}{{ paciente.fechana }}{% endif %}">
+        <br>
+        <br>
+        <input type="submit" name="accion"  class="btn" value="Actualizar">
+        <input type="submit" name="accion" class="btn" value="Buscar">
+    </form>
+</body>
+</html>
+
+
+
+
+
+{% endblock %}

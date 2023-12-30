@@ -1,0 +1,79 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    background-size: 25%; 
+    background-position-y:80%;
+    
+    background-image: url('../img/fondo.png'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
+   
+
+   
+    
+}
+
+.navbar {
+    background-color: black ;
+}
+
+
+.nav .nav-l .nav-link{
+    color: white;
+}
+
+.nav .nav-l .nav-link:hover{
+    color: orange;
+}
+
+.dropdown-menu .dropdown-item {
+    color: black; 
+}
+
+.dropdown-menu  a:hover {
+    color: orange;
+   
+ }
+
+
+
+
+.dropdown-menu .item {
+    text-decoration: none;
+    color: black;
+    justify-content: center;
+    text-align: center;
+    margin-left: 10%
+
+}
+.btn{
+    
+    background-color: #9034db; /* Color de fondo */
+    color: #ffffff; /* Color de texto */
+    border: none; /* Elimina el borde */
+    padding: 10px 20px; /* Relleno interno */
+    border-radius: 20px; /* Borde redondeado */
+    cursor: pointer; /* Cambia el cursor al pasar por encima */
+    font-size: 16px; /* Tamaño de fuente */
+}
+.btn:hover {
+    color:orange;
+}
+
+
+.message .succes{
+    width: 50%;
+}
+
+.frm{
+    
+    text-align: center ;
+    justify-content: center;
+    margin-top: 5%;
+    margin-right: 4%;
+    
+}

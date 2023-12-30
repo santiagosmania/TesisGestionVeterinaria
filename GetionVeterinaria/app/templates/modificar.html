@@ -1,0 +1,65 @@
+{% extends 'layout.html' %}
+{% load static %}
+<!-- se ponen en cada clase nombres a cada control de la interfaz para poder llamarlo en la view o 
+constructores -->
+<!-- el valor que es que estoy obteniendo de la view o vista o constructor
+tiene que coincidir con el value de la lista desplegable -->
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/modificarcli.css' %}">
+    <title>Modificar Clientes</title>
+</head>
+
+<body>
+    <form method="POST" action="{% url 'modificar_clientes' %}" class="frm">
+        {% csrf_token %}
+        <label for="dni">DNI</label>
+        <select name="dni" id="dni">
+            {% for dato in datos %}
+            <option value="{{ dato.dni }}">{{ dato.dni }}</option>
+            {% endfor %}
+        </select>
+
+        <br>
+        <br>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" value="{% if persona %}{{ persona.nombre }}{% endif %}">
+        <br>
+        <br>
+        <label for="apellido">Apellido</label>
+        <input type="text" name="apellido" value="{% if persona %}{{ persona.apellido }}{% endif %}">
+        <br>
+        <br>
+        <label for="direccion">Dirección</label>
+        <input type="text" name="direccion" value="{% if persona %}{{ persona.direccion }}{% endif %}">
+        <br>
+        <br>
+        <label for="telefono">Teléfono</label>
+        <input type="text" name="telefono" value="{% if persona %}{{ persona.telefono }}{% endif %}">
+        <br>
+        <br>
+        <label for="email">Email</label>
+        <input type="email" name="email" value="{% if persona %}{{ persona.email }}{% endif %}">
+        <br>
+        <br>
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado" value="{% if persona %}{{ persona.estado }}{% endif %}">
+            <option value="habilitado">Habilitado</option>
+            <option value="deshabilitado">Deshabilitado</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" name="accion"  class="btn" value="Actualizar">
+        <input type="submit" name="accion"  class="btn" value="Buscar">
+    </form>
+</body>
+
+</html>
+
+
+{% endblock %}

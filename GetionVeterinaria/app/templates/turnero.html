@@ -1,0 +1,95 @@
+{% extends 'layout.html' %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Reservar Turno</title>
+  <!-- Carga las bibliotecas de jQuery y jQuery UI -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/css/select2.min.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="{% static 'css/turnero.css' %}">
+  
+  <style>
+    /* Estilo CSS para la hora seleccionada */
+    .hora-seleccionada {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <h1>Reservar Turno</h1>
+  <form id="eventForm" method="POST" action="{% url 'create_event' %}">
+    {% csrf_token %}
+    <select name="idturno" id="idturno">
+      {% for dato in datos %}
+      <option value="{{ dato.idturno }}">{{ dato.idturno }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <br>
+    <label for="dni">DNI</label>
+    <input type="text" id="dni" name="dni" placeholder="DNI">
+    <br>
+    <br>
+    <label for="email">Email</label>
+    <input type="email" id="email" name="email" placeholder="Email">
+    <br>
+    <br>
+    <label for="celular">Celular</label>
+    <input type="text" id="celular" name="celular" placeholder="Número de celular">
+    <br>
+    <br>
+    <label for="tipo"> Tipo de turno</label>
+    <select name="tipo" id="tipo" required> <!-- para  agregar el estado de una lista desplegable tenes que pasar el value y el id 
+      asi en views sabe de donde tomar el valor -->
+        <option value="Normal">Normal</option>
+        <option value="Emergencia">Emergencia</option>
+    </select>
+    <br>
+    <br>
+    <label for="datepicker">Día</label>
+    <input type="date" id="datepicker" name="fecha" placeholder="Seleccione una fecha">
+    <br>
+    <br>
+    <label for="timepicker">Hora</label>
+    <select id="timepicker" name="hora">
+      {% for hora in horas_disponibles %}
+      <option value="{{ hora }}" {% if hora in horas_disponible %}style="color: red;" {% endif %}>{{ hora }}</option>
+      {% endfor %}
+    </select>
+    <br>
+    <br>
+    <input type="submit"  class="btn" value="Solicitar">
+    <button  class="btn"  id="filtrar-turnos">Filtrar Turnos</button>
+    <div id="turnos-container">
+      <h2>Turnos para la fecha seleccionada:</h2>
+      <ul>
+        {% for turno in turnos %}
+        <li>Fecha: {{ turno.fecha }} a las {{ turno.hora }} - DNI: {{ turno.dni }}</li>
+        {% empty %}
+        <li>No hay turnos registrados para esta fecha.</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </form>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+  <script src="{% static 'js/calendarturno.js' %}"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+{% endblock %}

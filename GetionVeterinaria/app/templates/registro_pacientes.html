@@ -1,0 +1,82 @@
+{% extends 'layout.html' %}
+{% load static %}
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registro_pacientes.css' %}">
+    <title>Registro Pacientes</title>
+</head>
+
+<body>
+    <form method="POST" action="{% url 'registro_pacientes' %}" class="frm">
+        {% csrf_token %}
+
+        <label for="dni">DNI:</label>
+        <select name="dni" id="dni">
+            {% for dato in datos %}
+            <option value="{{ dato.dni }}">{{ dato.dni }}</option>
+            {% endfor %}
+        </select>
+        <span id="dni-error" style="color: red;"></span>
+
+        <br>
+        <br>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" id="nombre" required>
+        <span id="nombre-exist" style="color: red;"></span>
+        <br>
+        <br>
+        <label for="raza">Raza</label>
+        <select name="idraza" id="idraza">
+            {% for datora in datosraza %}
+            <option value="{{ datora.idraza }}">{{ datora.raza }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="especie">Especie</label>
+        <select name="idespecie" id="idespecie">
+            {% for datosep in datosespecie %}
+            <option value="{{ datosep.idespecie }}">{{ datosep.especie }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <br>
+        <label for="sexo">Sexo</label>
+        <input type="radio" value="F" name="sexo"> F
+        <input type="radio" value="M" name="sexo"> M
+        <br>
+        <br>
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado" required>
+            <option value="habilitado">Habilitado</option>
+            <option value="deshabilitado">Deshabilitado</option>
+        </select>
+        <br>
+        <br>
+        <label for="seniaspart">Señales Particulares</label>
+        <input type="text" name="seniaspart" id="seniaspart" required>
+        <br>
+        <br>
+        <label for="chip">Chip</label>
+        <input type="text" name="chip" id="chip">
+        <br>
+        <br>
+
+        <label for="fechana">Fecha de Nacimiento</label>
+        <input type="text" name="fechana" id="fechana" required>
+        <br>
+        <br>
+        
+        <input type="submit" name="accion" class="btn" value="Registrar">
+    </form>
+    <script src="{% static 'js/verificar_dni_nombre.js' %}"></script>
+</body>
+
+</html>
+
+{%endblock%}

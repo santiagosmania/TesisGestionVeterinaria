@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('../img/fondo.png'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
+    
+    background-position:left;
+    
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    background-size: 25%; 
+    
+    /* Evita la repetición de la imagen */
+   
+    /* Hace que la imagen sea el 50% del tamaño original */
+  
+   
+  
+}
+
+
+
+.navbar {
+    background-color: black;
+}
+
+
+.nav .nav-l .nav-link {
+    color: white;
+}
+
+.nav .nav-l .nav-link:hover {
+    color: orange;
+}
+
+.dropdown-menu .dropdown-item {
+    color: black;
+}
+
+.dropdown-menu a:hover {
+    color: orange;
+
+}
+
+
+
+
+ .dropdown-menu .item {
+    text-decoration: none;
+    color: black;
+    justify-content: center;
+    text-align: center;
+    margin-left: 10%
+
+}
+
+.e {
+    background-color: blueviolet;
+    border-radius: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    margin: 0 auto; 
+   
+    
+}
+
+.e:hover {
+    color: orange;
+}
+
+.txt {
+    border-radius: 20px;
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    /* Hacer que el botón sea un bloque para que pueda centrarse horizontalmente. */
+    
+    margin: 0 auto;
+    margin-top: 20%;
+
+}
+.ch{
+    text-align: center;
+}

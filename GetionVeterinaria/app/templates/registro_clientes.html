@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+{% load static %}
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/registrocli.css' %}">
+
+    <title>Registro Clientes</title>
+</head>
+
+<body>
+
+    <form method="POST" action="{% url 'registro_clientes' %}" class="frm">
+        {% csrf_token %}
+        <!-- los valores de las cajas de texto se mandan mediante la solicitud post, pero 
+        tambien los name que se le asignan ayuda al pasaje de datos ya que es mas facil la interpretacion-->
+        <label for="dni">DNI</label>
+        <input type="text" name="dni" required>
+        <span class="error-message" id="dni-error" style="color: red;"></span>
+        <span class="error-message" id="dni-exist" style="color: red;"></span>
+        <br>
+        <br>
+        <label for="nombre">Nombre</label>
+        <input type="text" name="nombre" required>
+        <br>
+        <br>
+        <label for="apellido">Apellido</label>
+        <input type="text" name="apellido" required>
+        <br>
+        <br>
+        <label for="direccion">Dirección</label>
+        <input type="text" name="direccion" required>
+        <br>
+        <br>
+        <label for="telefono">Teléfono</label>
+        <input type="text" name="telefono" required>
+        <br>
+        <br>
+        <label for="email">Email</label>
+        <input type="email" name="email" required>
+        <br>
+        <br>
+        <label for="estado">Estado</label>
+        <select name="estado" id="estado" required> <!-- para  agregar el estado de una lista desplegable tenes que pasar el value y el id 
+                                                    asi en views sabe de donde tomar el valor -->
+            <option value="habilitado">Habilitado</option>
+            <option value="deshabilitado">Deshabilitado</option>
+        </select>
+        <br>
+        <br>
+        <input type="submit" name="accion" class="btn" value="registrar">
+        <br>
+        <br>
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
+    </form>
+
+    <script src="{% static 'js/verificar_dni.js' %}"></script>
+
+
+</body>
+
+</html>
+
+
+
+{%endblock%}

@@ -1,0 +1,114 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link rel="icon"  href="{% static 'img/logo.png' %}">
+  <title>
+    {%block title%}
+
+    {%endblock%}
+    Gestion Veterinaria
+
+  </title>
+</head>
+
+<body>
+
+  <header>
+
+
+
+    <nav class="navbar navbar-expand-lg ">
+      <div class="container-fluid">
+
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="nav">
+            <li class="nav-l ">
+              <a class="nav-link dropdown-toggle" href="/registro-clientes" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Gesion Clientes
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="">
+                <li><a class="item" href="/registro-clientes">Carga Clientes</a></li>
+                <li><a class="item" href="/modificar">Modificar Clientes</a></li>
+
+              </ul>
+            </li>
+            <li class="nav-l dropdown">
+              <a class="nav-link dropdown-toggle" href="/registro-pacientes" id="navbarDropdownMenuLink" role="button"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                Gesion Pacientes
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                <li><a class="item" href="/registro-pacientes">Carga Pacientes</a></li>
+                <li><a class="item" href="/modificar-pacientes">Modificar Paciente</a></li>
+              </ul>
+            </li>
+          <!--   <li class="nav-l">
+              <a class="nav-link" href="/gestion-stock">Gestion Stock</a>
+            </li> -->
+            <li class="nav-l">
+              <a class="nav-link" href="/create-event">Turnero Digital</a>
+            </li>
+            <li class="nav-l">
+              <a class="nav-link" href="/historial-clinico">Historial Clinico</a>
+            </li>
+            <!-- <li class="nav-l">
+              <a class="nav-link" href="/modificar-historialclinico">Modificar Clinico</a>
+            </li> -->
+            
+            <li class="nav-l">
+              <a class="nav-link" href="/chat">Bot Asistencia</a>
+            </li>
+
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+  </header>
+
+  <br>
+
+
+
+  <div class="registro-clientes">
+    {%block content%}
+
+
+    {%endblock%}
+  </div>
+
+
+  <div class="buscar-clientes">
+    {%block buscar%}
+
+
+    {%endblock%}
+  </div>
+
+  <div class="tunero">
+    {% block turno %}
+
+
+    {%endblock%}
+  </div>
+
+  <div class="contenedor">
+    <!-- El contenido de tu div -->
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+    crossorigin="anonymous"></script>
+</body>
+
+
+
+</html>
