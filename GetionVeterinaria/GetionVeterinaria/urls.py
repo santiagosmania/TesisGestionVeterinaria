@@ -43,6 +43,7 @@ urlpatterns = [
     path('chat/', app.views.chatbot, name="chat_bot"),
     path('create-event/', CreateEventView.as_view(), name='create_event'),
     path('filtrar-turnos/', PruebaFecha.as_view(), name='filtrar_turnos'),
+    path('get_especies_by_raza/<int:idraza>/', app.views.get_especies_by_raza, name='get_especies_by_raza'),
     #path('reserve/<int:year>/<int:month>/<int:day>/', app.views.reserve_view, name='reserve_view'),
 ]
 

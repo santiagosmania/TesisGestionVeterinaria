@@ -280,6 +280,10 @@ def get_horas_registradas(self, request):
 
     return JsonResponse({'horas_registradas': horas_registradas}, safe=False)
 
+def get_especies_by_raza(request, idraza):
+    especies = Especie.objects.filter(idraza_id=idraza).values('idespecie', 'especie')
+    return JsonResponse(list(especies), safe=False)
+
 
 class CreateEventView(View):
    

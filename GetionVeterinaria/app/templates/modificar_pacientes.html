@@ -8,21 +8,28 @@ tiene que coincidir con el value de la lista desplegable -->
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="{% static 'css/modificar_pacientes.css' %}">
     <title>Modificar Pacientes</title>
 </head>
+
 <body>
     <form method="POST" action="{% url 'modificar_pacientes' %}" class="frm">
         {% csrf_token %}
         <label for="idpaciente">ID</label>
+
         <select name="idpaciente" id="idpaciente">
             {% for dato in datos %}
-            <option value="{{ dato.idpaciente }}">{{ dato.idpaciente }}</option>
+            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.idpaciente }},{{ dato.nombre}}
+            </option>
             {% endfor %}
         </select>
+
+
         <br>
         <br>
         <label for="dni">DNI</label>
@@ -36,7 +43,9 @@ tiene que coincidir con el value de la lista desplegable -->
         <label for="raza">Raza</label>
         <select name="idraza" id="idraza">
             {% for datoraza in datosraza %}
-            <option value="{{ datoraza.idraza }}" {% if paciente and paciente.idraza == datoraza %}selected{% endif %}>{{ datoraza.raza }}</option>
+                <option value="{{ datoraza.idraza }}" {% if paciente and paciente.idraza == datoraza.idraza %}selected{% endif %}>
+                    {{ datoraza.raza }}
+                </option>
             {% endfor %}
         </select>
         <br>
@@ -44,9 +53,12 @@ tiene que coincidir con el value de la lista desplegable -->
         <label for="especie">Especie</label>
         <select name="idespecie" id="idespecie">
             {% for datoespecie in datosespecie %}
-            <option value="{{ datoespecie.idespecie }}" {% if paciente and paciente.idespecie == datoespecie %}selected{% endif %}>{{ datoespecie.especie }}</option>
+                <option value="{{ datoespecie.idespecie }}" {% if paciente and paciente.idespecie.idespecie == datoespecie.idespecie %}selected{% endif %}>
+                    {{ datoespecie.especie }}
+                </option>
             {% endfor %}
         </select>
+
         <br>
         <br>
         <label for="sexo">Sexo</label>
@@ -73,10 +85,12 @@ tiene que coincidir con el value de la lista desplegable -->
         <input type="text" name="fechana" value="{% if paciente %}{{ paciente.fechana }}{% endif %}">
         <br>
         <br>
-        <input type="submit" name="accion"  class="btn" value="Actualizar">
+        <input type="submit" name="accion" class="btn" value="Actualizar">
         <input type="submit" name="accion" class="btn" value="Buscar">
     </form>
+    <script src="{% static 'js/verificar_raza_especie.js' %}"></script>
 </body>
+
 </html>
 
 
