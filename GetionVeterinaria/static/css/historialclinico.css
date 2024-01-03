@@ -5,15 +5,26 @@
 }
 
 body {
-    background-image: url('../img/fondo.png'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
-    
-    background-position:center -35%;
     
     background-repeat: no-repeat; /* Evita la repetición de la imagen */
-    background-size: 25%; /* Ajusta el tamaño de la imagen para cubrir todo el fondo */
+    background-size: 20%; 
+    background-position-y:150%;
     
+    background-image: url('../img/fondo.png'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
+   
+
    
     
+}
+
+h1{
+    text-align: center;
+    justify-content: center;
+}
+
+.hora-ocupada {
+    color: red;
+    /* O cualquier otro estilo que desees aplicar a las horas ocupadas */
 }
 
 .navbar {
@@ -49,7 +60,6 @@ body {
     margin-left: 10%
 
 }
-
 .btn{
     
     background-color: #9034db; /* Color de fondo */
@@ -62,4 +72,18 @@ body {
 }
 .btn:hover {
     color:orange;
-  }
+}
+
+
+.message .succes{
+    width: 50%;
+}
+
+.frm{
+    
+    text-align: center ;
+    justify-content: center;
+    margin-top: 5%;
+    margin-right: 4%;
+    
+}

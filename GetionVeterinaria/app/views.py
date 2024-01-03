@@ -13,6 +13,8 @@ from django.template.loader import render_to_string
 from django.contrib import messages
 import calendar
 from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_GET
+from django.views.decorators.csrf import csrf_exempt
 
 
 def index(request):
@@ -271,65 +273,110 @@ def Registro_Pacientes(request):
     return render(request, 'registro_pacientes.html', {'datos': datos, 'datosraza': datosraza, 'datosespecie': datosespecie, 'mensaje_error': mensaje_error})
 
 
-def get_horas_registradas(self, request):
-    # Obtiene la fecha seleccionada del formulario
-    fecha_seleccionada = request.GET.get('fecha')
-    # Consulta la base de datos para obtener las horas registradas para la fecha seleccionada
-    horas_registradas = list(Event.objects.filter(
-        fecha=fecha_seleccionada).values_list('hora', flat=True))
-
-    return JsonResponse({'horas_registradas': horas_registradas}, safe=False)
 
 def get_especies_by_raza(request, idraza):
     especies = Especie.objects.filter(idraza_id=idraza).values('idespecie', 'especie')
     return JsonResponse(list(especies), safe=False)
 
 
-class CreateEventView(View):
-   
-    def get(self, request, *args, **kwargs):
-       
-        datos = Persona.objects.all()
-        # Obtener los parámetros de la URL
-        fecha_seleccionada = request.GET.get('fecha')
-        id_seleccionado = request.POST.get('idturno')
 
-        # Obtener las horas disponibles
-        horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
-                             '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
-        # Filtrar los eventos por fecha y ID
-        turnos = Event.objects.filter(
-            fecha=fecha_seleccionada, idturno=id_seleccionado)
 
-        return render(request, 'turnero.html', {'datos': datos,'horas_disponibles': horas_disponibles, 'turnos': turnos})
+def obtener_horas_ocupadas(request):
+    if request.method == 'POST':
+        fecha_seleccionada = request.POST.get('fecha', None)
 
-    def post(self, request, *args, **kwargs):
-        # Obtener los datos del formulario
-    
+        if fecha_seleccionada:
+            # Aquí debes reemplazar 'Event' con el modelo de tu aplicación que almacena los eventos
+            horas_ocupadas = Event.objects.filter(fecha=fecha_seleccionada).values_list('hora', flat=True)
 
+            return JsonResponse({'horas_ocupadas': list(horas_ocupadas)})
+
+    return JsonResponse({'error': 'Invalid request'})
+
+
+def Turnero(request):
+    error_message = None
+
+    if request.method == 'POST':
         dni = request.POST.get('dni')
         email = request.POST.get('email')
         celular = request.POST.get('celular')
         fecha = request.POST.get('fecha')
-        hora = request.POST.get('hora')
         tipo = request.POST.get('tipo')
+        hora_seleccionada = request.POST.get('hora')
 
-        # Crear y guardar el evento en la base de datos
-        turno = Event(dni=dni, email=email, celular=celular,
-                      tipo=tipo, fecha=fecha, hora=hora)
-        turno.save()
+        # Obtener las horas ocupadas para la fecha seleccionada
+        horas_ocupadas = list(Event.objects.filter(fecha=fecha).values_list('hora', flat=True))
 
-        # Enviar un correo electrónico
-        subject = 'Veterinaria Full Campo'
-        message = f'Su turno ha sido agendado.\nFecha: {fecha}\nHora: {hora}'
-        from_email = 'santiago.smania@gmail.com'
-        recipient_list = [email]
-        send_mail(subject, message, from_email, recipient_list)
+        # Verifica si la hora seleccionada está disponible
+        if hora_seleccionada in horas_ocupadas:
+            messages.error(request, f"La hora {hora_seleccionada} ya está ocupada. Por favor, elige otra hora.")
+        else:
+            # Agrega el nuevo evento a la base de datos
+            turno = Event(dni=dni, email=email, celular=celular, tipo=tipo, fecha=fecha, hora=hora_seleccionada)
+            messages.success(request, "El turno se agendó exitosamente.")
+            turno.save()
 
-        horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
-                             '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
+            # Envía el correo electrónico de confirmación
+            subject = 'Veterinaria Full Campo'
+            message = f'Su turno ha sido agendado.\nFecha: {fecha}\nHora: {hora_seleccionada}'
+            from_email = 'santiago.smania@gmail.com'
+            recipient_list = [email]
+            send_mail(subject, message, from_email, recipient_list)
 
-        return render(request, 'turnero.html', {'success_message': 'Evento creado y correo electrónico enviado', 'horas_disponibles': horas_disponibles})
+    return render(request, 'turnero.html', {
+        'error_message': error_message,
+    })
+
+
+
+
+
+# class CreateEventView(View):
+   
+#     def get(self, request, *args, **kwargs):
+       
+#         datos = Persona.objects.all()
+#         # Obtener los parámetros de la URL
+#         fecha_seleccionada = request.GET.get('fecha')
+#         id_seleccionado = request.POST.get('idturno')
+
+#         # Obtener las horas disponibles
+#         horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
+#                              '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
+#         # Filtrar los eventos por fecha y ID
+#         turnos = Event.objects.filter(
+#             fecha=fecha_seleccionada, idturno=id_seleccionado)
+
+#         return render(request, 'turnero.html', {'datos': datos,'horas_disponibles': horas_disponibles, 'turnos': turnos})
+
+#     def post(self, request, *args, **kwargs):
+#         # Obtener los datos del formulario
+    
+
+#         dni = request.POST.get('dni')
+#         email = request.POST.get('email')
+#         celular = request.POST.get('celular')
+#         fecha = request.POST.get('fecha')
+#         hora = request.POST.get('hora')
+#         tipo = request.POST.get('tipo')
+
+#         # Crear y guardar el evento en la base de datos
+#         turno = Event(dni=dni, email=email, celular=celular,
+#                       tipo=tipo, fecha=fecha, hora=hora)
+#         turno.save()
+
+#         # Enviar un correo electrónico
+#         subject = 'Veterinaria Full Campo'
+#         message = f'Su turno ha sido agendado.\nFecha: {fecha}\nHora: {hora}'
+#         from_email = 'santiago.smania@gmail.com'
+#         recipient_list = [email]
+#         send_mail(subject, message, from_email, recipient_list)
+
+#         horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
+#                              '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
+
+#         return render(request, 'turnero.html', {'success_message': 'Evento creado y correo electrónico enviado', 'horas_disponibles': horas_disponibles})
    
 
 class PruebaFecha(View):

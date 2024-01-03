@@ -7,11 +7,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/historial_clinico.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/historialclinico.css' %}">
     <title>Historial Clinico</title>
 </head>
 <body>
-    <h1>Elija historial Clinico</h1>
+    <h1>HISTORIAL CLINICO</h1>
+    <form method="POST" action="{% url 'registro_clientes' %}" class="frm">
+        {% csrf_token %}
+        <!-- los valores de las cajas de texto se mandan mediante la solicitud post, pero 
+        tambien los name que se le asignan ayuda al pasaje de datos ya que es mas facil la interpretacion-->
+
+    
+
+        <label for="dni">DNI Cliente</label>
+        <select name="dni" id="dni">
+            {% for dato in datos %}
+            <option value="{{ dato.dni }}">{{ dato.dni }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="idpaciente">Paciente</label>
+        <select name="idpaciente" id="idpaciente">
+            {% for dato in datos %}
+            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.nombre}}
+            </option>
+            {% endfor %}
+        </select>
+
+
+
+        <br>
+        <br>
+        <br>
+        <br> 
+
+        <h2>LISTADO DE PACIENTES</h2>
+        <br>
+        <br> 
+        
+        <label for="dni">DNI Cliente</label>
+        <select name="dni" id="dni">
+            {% for dato in datos %}
+            <option value="{{ dato.dni }}">{{ dato.dni }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="idpaciente">Paciente</label>
+        <select name="idpaciente" id="idpaciente">
+            {% for dato in datos %}
+            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.nombre}}
+            </option>
+            {% endfor %}
+        </select>
+         
+        <label for="Año">Año</label>
+        <select name="Año" id="Año">
+            {% for dato in datos %}
+            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.nombre}}
+            </option>
+            {% endfor %}
+        </select>
+
+        <label for="Mes">Mes</label>
+        <select name="Mes" id="Mes">
+            {% for dato in datos %}
+            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.nombre}}
+            </option>
+            {% endfor %}
+        </select>
+
+
+
+    </form>
 </body>
 </html>
 {%endblock%}
