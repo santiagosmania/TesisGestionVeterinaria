@@ -52,17 +52,18 @@ INSERT INTO `clientes` (`dni`, `apellido`, `nombre`, `Direccion`, `telefono`, `e
 CREATE TABLE `especies` (
   `idespecie` int(255) NOT NULL,
   `especie` varchar(100) NOT NULL,
-  `idraza` int(255) NOT NULL
+  `idespecie` int(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `especies`
 --
 
-INSERT INTO `especies` (`idespecie`, `especie`, `idraza`) VALUES
-(1, 'siames', 1),
-(2, 'Bulldog Ingles', 3),
-(3, 'Árabe', 2);
+
+INSERT INTO `especies` (`idespecie`, `especie`) VALUES
+(1, 'felino'),
+(2, 'equino'),
+(3, 'caninos');
 
 -- --------------------------------------------------------
 
@@ -152,16 +153,18 @@ CREATE TABLE `peso` (
 CREATE TABLE `razas` (
   `idraza` int(255) NOT NULL,
   `raza` varchar(100) NOT NULL
+   
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `razas`
 --
+INSERT INTO `razas` (`idraza`, `raza`,`idespecie`) VALUES
+(1, 'siames', 1),
+(2, 'Bulldog Ingles', 3),
+(3, 'Árabe', 2);
 
-INSERT INTO `razas` (`idraza`, `raza`) VALUES
-(1, 'felino'),
-(2, 'equino'),
-(3, 'caninos');
+
 
 -- --------------------------------------------------------
 

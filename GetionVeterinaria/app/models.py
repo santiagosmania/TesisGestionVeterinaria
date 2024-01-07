@@ -1,12 +1,12 @@
 from django.db import models
-
+from django.utils import timezone
 
 # se declara un modelo por tabla
 # se declara una clase por tabla
 
 class sesion(models.Model):
     dni = models.CharField(max_length=20)
-    contrasena = models.CharField(max_length=100)
+    contrasena = models.CharField(max_length=100, null=True)
 
     def __str__(self):
         return self.dni
@@ -102,12 +102,12 @@ class Event(models.Model):
 
 
 class Peso(models.Model):
-    idpeso = models.IntegerField(primary_key=True)
+    idpeso = models.AutoField(primary_key=True)
     peso = models.CharField(max_length=20)
     # Assuming idespecie is a foreign key to Especie.
-    fecha = models.DateField()
+  
     def __str__(self):
-        return f'{self.peso}'
+        return f'{self.peso}'  # Corrige aquí para que coincida con el nombre del campo
 
     class Meta:
         db_table = 'peso'
@@ -115,21 +115,23 @@ class Peso(models.Model):
 
 class Vacunas(models.Model):
     idvacuna = models.IntegerField(primary_key=True)
-    vacuna = models.CharField(max_length=20)
+    vacuna = models.CharField(max_length=100)
     # Assuming idespecie is a foreign key to Especie.
-    laboratorio = models.CharField(max_length=20)
+    laboratorio = models.CharField(max_length=100)
     def __str__(self):
         return f'{self.vacuna}'
 
-    class Meta:
-        db_table = 'vacuna'
+    def __str__(self):
+        return f'{self.idvacuna}'
 
+    class Meta:
+        db_table = 'vacunas'
 
 
 
 
 class ExamenCli(models.Model):
-    idexamenc = models.IntegerField(primary_key=True)
+    idexamenc = models.AutoField(primary_key=True)
     ganglios = models.CharField(max_length=20)
     mucosas = models.CharField(max_length=20)
     temperatura = models.CharField(max_length=20)
@@ -137,38 +139,38 @@ class ExamenCli(models.Model):
     pulso = models.CharField(max_length=20)
     respiratoria = models.CharField(max_length=20)
     # Assuming idespecie is a foreign key to Especie.
-    laboratorio = models.CharField(max_length=20)
+   
 
     def __str__(self):
         return f'{self.idexamenc}'
 
     class Meta:
-        db_table = 'idexamenc'
+        db_table = 'examenclinico'
 
 
 
-class historial(models.Model):
+class Historial(models.Model):
     idhistorial = models.IntegerField(primary_key=True)
-    idpaciente = models.ForeignKey(
-        Paciente, on_delete=models.CASCADE, db_column='idpaciente')
-    fecha = models.DateField()
-    peso = models.CharField(max_length=50)
+    idpaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, db_column='idpaciente')
+
+    fecha = models.DateTimeField()
+
     fechadesp = models.DateField()
-    proddesp = models.CharField(max_length=50)
-    idvacuna = models.ForeignKey(
-        Vacunas, on_delete=models.CASCADE, db_column='idvacuna')
+    productodesp = models.CharField(max_length=100, default='')  # Puedes cambiar el valor predeterminado según sea necesario
+    idvacuna = models.ForeignKey(Vacunas, on_delete=models.CASCADE, db_column='idvacuna')
     lotev = models.CharField(max_length=100)
     fechacelo = models.DateField()
     fechapart = models.DateField()
-    est = models.CharField(max_length=10)
-    cons = models.CharField(max_length=10)
-    hall = models.CharField(max_length=10)
-    idexmanec = models.ForeignKey(
+    estirilizado = models.CharField(max_length=10)
+    consulta = models.TextField(default='')
+    hallazgo = models.TextField()
+    idexamenc = models.ForeignKey(
         ExamenCli, on_delete=models.CASCADE, db_column='idexamenc')
     idpeso = models.ForeignKey(
         Peso, on_delete=models.CASCADE, db_column='idpeso')
+
     def __str__(self):
         return f'{self.idhistorial}'
 
     class Meta:
-        db_table = 'idhistorial'
+        db_table = 'historial'
