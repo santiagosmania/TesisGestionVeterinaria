@@ -9,9 +9,9 @@
     <link
       rel="stylesheet"
       type="text/css"
-      href="{% static 'css/modificarhist.css' %}"
+      href="{% static 'css/crearhist.css' %}"
     />
-    <title>Modificar Historial Clinico</title>
+    <title>Crear Historial Clinico</title>
   </head>
 
   <body>
@@ -22,28 +22,15 @@
       <h2>DATOS DEL PACIENTE</h2>
       <br />
       <br />
-      <label for="nombre">Nombre</label>
-      <input type="text" name="nombre"  class="txt"  id="nombre" required />
-      <span id="nombre-exist" style="color: red"></span>
-    
-      <label for="sexo" >Sexo</label>
-   
-        F <input type="radio" value="F" name="sexo"  /> 
-        M <input type="radio" value="M"  class="txt" name="sexo" /> 
-    
+      <label for="idpaciente">ID</label>
 
-      <label for="especie">Especie</label>
-      <input type="text" name="especie"  class="txt" id="especie" required />
-
-      <br>
-      <br />
-      <br />
-
-      <label for="raza">raza</label>
-      <input type="text" name="raza"  class="txt" id="raza" required />
-
-      <label for="fechana">Fecha de Nacimiento</label>
-      <input type="text" name="fechana"  class="txt" id="fechana" required />
+        <select name="idpaciente" id="idpaciente">
+            {% for dato in datos %}
+            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.idpaciente }},{{ dato.nombre}}
+            </option>
+            {% endfor %}
+        </select>
 
       <label for="peso">peso</label>
       <input type="text" name="peso"  class="txt" id="peso" required />
@@ -52,64 +39,6 @@
       <br />
       <br />
       <br />
-
-      
-      <h2>ANAMNESICOS</h2>
-    
-      <br />
-      <br />
-    
-      <label for="ultdesp">ULTIMA DESPARACITACION</label>
-      <input type="text" name="ultdesp" class="txt" id="ultdesp" required />
-
-      <label for="producto">PRODUCTO</label>
-      <input type="text" name="producto" class="txt" id="producto" required />
-
-      <br />
-      <br />
-
-      <label for="vacunas">VACUNAS</label>
-      <input type="text" name="vacunas"  class="txt" id="vacunas" required />
-
-      <label for="marca"> MARCA </label>
-      <input type="text" name="marca"  class="txt" id="marca" required />
-
-      <label for="lote">LOTE</label>
-      <input type="text" name="lote"  class="txt" id="lote" required />
-
-      <br />
-      <br />
-
-      <br>
-      <br>
-   
-      <h2>HISTORIA REPRODUCTIVA</h2>
-    
-      <br>
-      <br>
-      <label for="ultimocelo">ULTIMO CELO</label>
-      <input type="text" name="ultimocelo" class="txt" id="ultimocelo" required />
-
-      <label for="fechultpart">FECHA ULTIMO PARTO</label>
-      <input type="text" name="fechultpart"  class="txt" id="fechultpart" required />
-
-      <label for="estilirizado">ESTERILIZADO</label>
-      SI <input type="radio" value="si" name="est" /> 
-      NO <input type="radio" value="no" class="txt" name="est" /> 
-
-      <br />
-      <br />
-      <br>
-      <br>
-      <h2>MOTIVO DE CONSULTA</h2>
-      <br>
-      <br>
-      
-      <textarea name="" id="motcons" cols="100" rows="10"></textarea>
-
-      <br />
-      <br />
-
 
       <h2>EXAMEN CLINICO</h2>
 
@@ -129,8 +58,8 @@
       <br>
       
       
-      <label for="mucosa">MUCOSAS</label>
-      <input type="text" name="mucosa"  class="txt" id="mucosa" required />
+      <label for="mucosas">MUCOSAS</label>
+      <input type="text" name="mucosas"  class="txt" id="mucosas" required />
 
       <label for="temperatura">TEMPERATURA</label>
       <input type="text" name="temperatura" class="txt" id="temperatura" required />
@@ -144,17 +73,96 @@
 
       <br>
       <br>
+
+      <h2>ANAMNESICOS</h2>
+    
+      <br />
+      <br />
+    
+      <label for="fechadesp">ULTIMA DESPARACITACION</label>
+      <input type="text" name="fechadesp" class="txt" id="fechadesp" required>
+      
+      <label for="productodesp"> PRODUCTO </label>
+      <input type="text" name="productodesp"  class="txt"  id="productodesp">
+
+      <br />
+      <br />
+
+      <label for="idvacuna">ID</label>
+
+        <select name="idvacuna" id="idvacuna">
+            {% for dato in datosV %}
+            <option value="{{ dato.idvacuna }}" {% if vacuna and vacuna.idvacuna == dato.idvacuna %}selected{% endif %}>
+                {{ dato.idvacuna }},{{ dato.vacuna}}
+            </option>
+            {% endfor %}
+        </select>
+
+
+
+     
+
+      <label for="marca"> MARCA </label>
+      <input type="text" name="marca" class="txt" id="marca" required>
+
+     
+
+      <label for="lotev"> LOTE </label>
+      <input type="text" name="lotev" class="txt" id="lotev" required>
+
+      <br />
+      <br />
+
+      <br>
+      <br>
+   
+      <h2>HISTORIA REPRODUCTIVA</h2>
+    
+      <br>
+      <br>
+      
+
+      <label for="fechacelo">ULTIMO CELO</label>
+      <input type="text" name="fechacelo" class="txt" id="fechacelo" required>
+      
+      <label for="fechapart">FECHA ULTIMO PARTO </label>
+      <input type="text" name="fechapart"  class="txt"   id="fechapart" required>
+        
+      
+      <label for="estirilizado">ESTERILIZADO</label>
+      SI <input type="radio" name="estirilizado" id="estirilizado" value="si">
+      NO <input type="radio" name="estirilizado" id="estirilizado" value="no">
+
+      <!-- <label for="estirilizado">estirilizado</label>
+      <input type="text" name="estirilizado" class="txt" id="estirilizado" required /> -->
+
+      <br />
+      <br />
+      <br>
+      <br>
+      <h2>MOTIVO DE CONSULTA</h2>
+      <br>
+      <br>
+      
+      
+      <textarea name="consulta" id="consulta" cols="100" rows="10" required></textarea>
+
+      <br />
+      <br />
+
+
+     
       <h2>DESCRIPCION DE HALLAZGO</h2>
       <br>
       <br>
-
-      <textarea name="" id="motcons" cols="100" rows="10"></textarea>
+      <textarea name="hallazgo" id="hallazgo" cols="100" rows="10" required></textarea>
+      
 
       <br>
       <br>
-      <input type="submit" name="accion" class="btn" value="Actualizar" />
+      <input type="submit" name="accion" class="btn" value="Modificar">
     </form>
-    <script src="{% static 'js/verificar_dni_nombre.js' %}"></script>
+    
   </body>
 </html>
 

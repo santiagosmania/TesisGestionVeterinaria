@@ -7,31 +7,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/historialclinico.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/historial_clinico.css' %}">
     <title>Historial Clinico</title>
 </head>
 <body>
     <h1>HISTORIAL CLINICO</h1>
-    <form method="POST" action="{% url 'registro_clientes' %}" class="frm">
+    <form method="POST" action="{% url 'historial_clinico' %}" class="frm" id="frm">
         {% csrf_token %}
         <!-- los valores de las cajas de texto se mandan mediante la solicitud post, pero 
         tambien los name que se le asignan ayuda al pasaje de datos ya que es mas facil la interpretacion-->
 
     
-
-        <label for="dni">DNI Cliente</label>
-        <select name="dni" id="dni">
+        <label for="dni">DNI</label>
+        <select name="dni" id="dniCliente">
             {% for dato in datos %}
             <option value="{{ dato.dni }}">{{ dato.dni }}</option>
             {% endfor %}
         </select>
 
         <label for="idpaciente">Paciente</label>
-        <select name="idpaciente" id="idpaciente">
-            {% for dato in datos %}
-            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
-                {{ dato.nombre}}
-            </option>
+        <select name="idpaciente" id="idPaciente">
+            {% for dato in datospaciente %}
+                <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.nombre }}
+                </option>
             {% endfor %}
         </select>
 
@@ -46,7 +45,7 @@
         <br>
         <br> 
         
-        <label for="dni">DNI Cliente</label>
+        <label for="dni">DNI</label>
         <select name="dni" id="dni">
             {% for dato in datos %}
             <option value="{{ dato.dni }}">{{ dato.dni }}</option>
@@ -54,35 +53,177 @@
         </select>
 
         <label for="idpaciente">Paciente</label>
-        <select name="idpaciente" id="idpaciente">
-            {% for dato in datos %}
-            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
-                {{ dato.nombre}}
-            </option>
-            {% endfor %}
-        </select>
-         
-        <label for="Año">Año</label>
-        <select name="Año" id="Año">
-            {% for dato in datos %}
-            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
-                {{ dato.nombre}}
-            </option>
+        <select name="idpaci" id="idPaci">
+            {% for dato in datospaciente %}
+                <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                {{ dato.nombre }}
+                </option>
             {% endfor %}
         </select>
 
-        <label for="Mes">Mes</label>
-        <select name="Mes" id="Mes">
-            {% for dato in datos %}
-            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
-                {{ dato.nombre}}
-            </option>
+        <label for="fecha">Fecha</label>
+        <select name="fecha" id="fecha">
+            {% for dato in datoshistorial %}
+                {% with historial_fecha=historial.fecha %}
+                    <option value="{{ dato.idhistorial }}" {% if historial and historial.idhistorial == dato.idhistorial and historial_fecha == dato.fecha %}selected{% endif %}>
+                    {{ dato.fecha }}
+                    </option>
+                {% endwith %}
             {% endfor %}
         </select>
 
+
+
+
+
+   
+        <input type="submit" value="Buscar" name="btn" id="btn">
 
 
     </form>
+    
+   <!-- historial_clinico.html -->
+    <div id="cuadradoNegro" class="{% if mostrar_cuadrado %}mostrar{% endif %}">
+        {% if historial_data %}
+            <p>Información del Historial Clínico:</p>
+            <ul>
+                <li>ID del Historial: {{ historial_data.idhistorial }}</li>
+                <li>Fecha: {{ historial_data.fecha }}</li>
+            <!-- Agrega más elementos según sea necesario -->
+            </ul>
+        {% else %}
+            <p>No se encontró información del historial clínico.</p>
+        {% endif %}
+    </div>  
+       
+  
+    
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var formulario = document.getElementById('frm');
+        if (formulario) {
+            formulario.addEventListener('submit', function() {
+                mostrarCuadradoNegro();
+            });
+        }
+
+        var buscarFormulario = document.getElementById('buscarFormulario');
+        if (buscarFormulario) {
+            buscarFormulario.addEventListener('submit', function() {
+                mostrarCuadradoNegro();
+            });
+        }
+
+        // Mostrar el cuadrado negro si la información persiste en localStorage
+        if (localStorage.getItem('mostrar_cuadrado')) {
+            var cuadradoNegro = document.getElementById('cuadradoNegro');
+            if (cuadradoNegro) {
+                cuadradoNegro.classList.add('mostrar');
+            }
+        }
+    });
+
+    function mostrarCuadradoNegro() {
+        var cuadradoNegro = document.getElementById('cuadradoNegro');
+        if (cuadradoNegro) {
+            cuadradoNegro.classList.add('mostrar');
+
+            // Guardar el estado en localStorage para que persista entre recargas
+            localStorage.setItem('mostrar_cuadrado', 'true');
+        }
+    }
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var dniSelect = document.getElementById('dniCliente');
+            var pacienteSelect = document.getElementById('idPaciente');
+    
+            dniSelect.addEventListener('change', function () {
+                var selectedDNI = dniSelect.value;
+    
+                // Convertir el DNI a un número entero antes de realizar la solicitud AJAX
+                selectedDNI = parseInt(selectedDNI, 10);
+    
+                // Realizar una solicitud AJAX para obtener los pacientes asociados al DNI seleccionado
+                fetch('/get_pacientes_by_dni/' + selectedDNI + '/')
+                    .then(response => response.json())
+                    .then(data => {
+                        // Limpiar la lista actual de pacientes
+                        pacienteSelect.innerHTML = '';
+    
+                        // Agregar las nuevas opciones de pacientes
+                        data.forEach(paciente => {
+                            var option = document.createElement('option');
+                            option.value = paciente.idpaciente;
+                            option.textContent = paciente.nombre; // Ajusta esto según la estructura de tus datos
+                            pacienteSelect.appendChild(option);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+        });
+    </script>
+   <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var dniSelect = document.getElementById('dni');
+        var pacienteSelect = document.getElementById('idPaci');
+
+        dniSelect.addEventListener('change', function () {
+            var selectedDNI = dniSelect.value;
+
+            // Convertir el DNI a un número entero antes de realizar la solicitud AJAX
+            selectedDNI = parseInt(selectedDNI, 10);
+
+            // Realizar una solicitud AJAX para obtener los pacientes asociados al DNI seleccionado
+            fetch('/get_pacientes_by_dni/' + selectedDNI + '/')
+                .then(response => response.json())
+                .then(data => {
+                    // Limpiar la lista actual de pacientes
+                    pacienteSelect.innerHTML = '';
+
+                    // Agregar las nuevas opciones de pacientes
+                    data.forEach(paciente => {
+                        var option = document.createElement('option');
+                        option.value = paciente.idpaciente;
+                        option.textContent = paciente.nombre; // Ajusta esto según la estructura de tus datos
+                        pacienteSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    var pacienteSelect = document.getElementById('idPaci');
+    var fechaSelect = document.getElementById('fecha');
+
+    pacienteSelect.addEventListener('change', function () {
+        var selectedPaciente = pacienteSelect.value;
+
+        // Realizar una solicitud AJAX para obtener las fechas asociadas al paciente seleccionado
+        fetch('/get_historial_by_paciente/' + selectedPaciente + '/')
+            .then(response => response.json())
+            .then(data => {
+                // Limpiar la lista actual de fechas
+                fechaSelect.innerHTML = '';
+
+                // Agregar las nuevas opciones de fechas
+                data.forEach(historial => {
+                    var option = document.createElement('option');
+                    option.value = historial.idhistorial;
+                    option.textContent = historial.fecha; // Ajusta esto según la estructura de tus datos
+                    fechaSelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    });
+});
+</script>
+
+
 </body>
 </html>
 {%endblock%}

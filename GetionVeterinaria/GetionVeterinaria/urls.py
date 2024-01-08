@@ -43,9 +43,14 @@ urlpatterns = [
    # path('create-event/', CreateEventView.as_view(), name='create_event'),
     path('filtrar-turnos/', PruebaFecha.as_view(), name='filtrar_turnos'),
     path('get_especies_by_raza/<int:idraza>/', app.views.get_especies_by_raza, name='get_especies_by_raza'),
+    path('get_pacientes_by_dni/<int:dni>/', app.views.get_pacientes_by_dni, name='get_pacientes_by_dni'),
+    path('get_historial_info/<int:idpaciente>/', app.views.get_historial_info, name='get_historial_info'),
+    path('get_historial_by_paciente/<int:idpaciente>/', app.views.get_historial_by_paciente, name='get_historial_by_paciente'),
+    
+]
     
     #path('reserve/<int:year>/<int:month>/<int:day>/', app.views.reserve_view, name='reserve_view'),
-]
+
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

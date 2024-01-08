@@ -216,199 +216,9 @@ def Modificar_Pacientes(request):
     return render(request, 'modificar_pacientes.html', {'datos': datos, 'paciente': paciente, 'datosraza': datosraza, 'datosespecie': datosespecie})
 
 
-# def crear_historialclinico(request):
-#     mensaje_error = None
-
-#     if request.method == 'POST':
-#         nombre = request.POST.get('nombre')
-#         sexo = request.POST.get('sexo')
-#         fecha = timezone.now()
-#         fechana = request.POST.get('fechana', None)
-#         fechadesp = request.POST.get('fechadesp', None)
-#         fechacelo = request.POST.get('fechacelo', None)
-#         fechapart = request.POST.get('fechapart', None)
-#         proddesp = request.POST.get('proddesp')
-#         lotev = request.POST.get('lotev')
-#         vacunaT = request.POST.get('vacuna')
-#         laboratorio = request.POST.get('laboratorio')
-#         estirilizado = request.POST.get('estirilizado')
-#         consulta = request.POST.get('consulta')
-#         hallazgo = request.POST.get('hallazgo')
-#         pesoT = request.POST.get('peso')
-#         ganglios = request.POST.get('ganglios')
-#         mucosas = request.POST.get('mucosas')
-#         temperatura = request.POST.get('temperatura')
-#         cardiaca = request.POST.get('cardiaca')
-#         pulso = request.POST.get('pulso')
-#         respiratoria = request.POST.get('respiratoria')
-#         paciente = request.POST.get('idpaciente')
-
-#         vacuna = request.POST.get('vacuna')
-#         examenc = request.POST.get('examenc')
-#         peso = request.POST.get('peso')
 
 
-#         # idpaciente = request.POST.get('idpaciente')
-#         # paciente = Paciente.objects.get(pk=idpaciente)
-#         # idespecie = request.POST.get('idespecie')
-#         # especie = Especie.objects.get(pk=idespecie)
-#         # idvacuna = request.POST.get('idvacuna')
-#         # vacuna = Vacunas.objects.get(pk=idvacuna)
-#         # idexamenc = request.POST.get('idexamenc')
-#         # examenc = ExamenCli.objects.get(pk=idexamenc)
-#         # idpeso = request.POST.get('idpeso')
-#         # peso = Peso.objects.get(pk=idpeso)
 
-#         # try:
-#         #     fechana_formatted = datetime.strptime(fechana, '%d/%m/%Y').strftime('%Y-%m-%d') if fechana else None
-#         #     fechadesp_formatted = datetime.strptime(fechadesp, '%d/%m/%Y').strftime('%Y-%m-%d') if fechadesp else None
-#         #     fechacelo_formatted = datetime.strptime(fechacelo, '%d/%m/%Y').strftime('%Y-%m-%d') if fechacelo else None
-#         #     fechapart_formatted = datetime.strptime(fechapart, '%d/%m/%Y').strftime('%Y-%m-%d') if fechapart else None
-#         # except ValueError:
-#         #     fecha_formatted = fechana_formatted = fechadesp_formatted = fechacelo_formatted = fechapart_formatted = None
-
-#         try:
-#             historial = Historial(
-#                 nombre=nombre,
-#                 sexo=sexo,
-#                 proddesp=proddesp,
-#                 lotev=lotev,
-#                 est=estirilizado,
-#                 cons=consulta,
-#                 hall=hallazgo,
-#                 paciente=paciente,
-
-#                 vacuna=vacuna,
-#                 # idpeso=peso,
-#                 # idespecie=especie,
-#                 # idpaciente=paciente,
-#                 # paciente=paciente,
-#                 # idvacuna=vacuna,
-#                 # idexamenc=examenc,
-#                 fecha=fecha,
-#                 fechana=fechana,
-#                 fechadesp=fechadesp,
-#                 fechacelo=fechacelo,
-#                 fechapart=fechapart,
-#             )
-
-#             vacunas = Vacunas(
-#                 vacunaT=vacunaT,
-#                 laboratorio=laboratorio
-#             )
-
-#             peso = Peso(
-#                 pesoT=pesoT
-#             )
-
-#             examenc = ExamenCli(
-#                 ganglios=ganglios,
-#                 mucosas=mucosas,
-#                 temperatura=temperatura,
-#                 cardiaca=cardiaca,
-#                 pulso=pulso,
-#                 respiratoria=respiratoria
-#             )
-
-#             historial.save()
-#             vacunas.save()
-#             peso.save()
-#             examenc.save()
-#         except ValueError:
-#             mensaje_error = "Error al procesar los datos."
-
-#     return render(request, 'crear_historialclinico.html', {'mensaje_error': mensaje_error})
-
-
-# def crear_historialclinico(request):
-#     mensaje_error = None
-#     datos = Paciente.objects.all()
-#     datosV = Vacunas.objects.all()
-#     datosExam = ExamenCli.objects.all()
-
-#     if request.method == 'POST':
-#         try:
-#             fecha = timezone.now()
-#             fechadesp = request.POST.get('fechadesp')
-#             fechacelo = request.POST.get('fechacelo')
-#             fechapart = request.POST.get('fechapart')
-#             productodesp = request.POST.get('productodesp')
-#             lotev = request.POST.get('lotev')
-#             estirilizado = request.POST.get('estirilizado')
-#             consulta = request.POST.get('consulta')
-#             hallazgo = request.POST.get('hallazgo')
-#             pesoT = request.POST.get('peso')
-#             ganglios = request.POST.get('ganglios')
-#             mucosas = request.POST.get('mucosas')
-#             temperatura = request.POST.get('temperatura')
-#             cardiaca = request.POST.get('cardiaca')
-#             pulso = request.POST.get('pulso')
-#             respiratoria = request.POST.get('respiratoria')
-
-#             idpaciente = request.POST.get('idpaciente')
-#             paciente = Paciente.objects.get(pk=idpaciente)
-#             idvacuna = request.POST.get('idvacuna')
-#             vacunas = Vacunas.objects.get(pk=idvacuna)
-#             # idexamenc = ExamenCli.objects.get(pk=idexamenc)
-
-#             if fechadesp:
-#                 fechadesp = datetime.strptime(
-#                     fechadesp, '%d/%m/%Y').strftime('%Y-%m-%d')
-
-#             if fechacelo:
-#                 fechacelo = datetime.strptime(
-#                     fechacelo, '%d/%m/%Y').strftime('%Y-%m-%d')
-
-#             if fechapart:
-#                 fechapart = datetime.strptime(
-#                     fechapart, '%d/%m/%Y').strftime('%Y-%m-%d')
-
-#             # Create and save Examenc instance
-#             examenc = ExamenCli(
-#                 ganglios=ganglios,
-#                 mucosas=mucosas,
-#                 temperatura=temperatura,
-#                 cardiaca=cardiaca,
-#                 pulso=pulso,
-#                 respiratoria=respiratoria
-#             )
-            
-#             examenc.save()
-#             # Now you can access the idexamenc
-#             idexamenc = examenc.idexamenc
-
-#             historial = Historial(
-#                 idpaciente=paciente,
-#                 idvacuna=vacunas,
-#                 # Cambia a idexmanec, que es el nombre del campo en tu modelo Historial
-#                 idexamenc=idexamenc,
-#                 fecha=fecha,
-#                 fechadesp=fechadesp,
-#                 fechacelo=fechacelo,
-#                 fechapart=fechapart,
-#                 productodesp=productodesp,
-#                 lotev=lotev,
-#                 estirilizado=estirilizado,
-#                 consulta=consulta,
-#                 hallazgo=hallazgo,
-                
-                
-#             )
-#             historial.save()
-            
-
-#             peso = Peso(
-#                 pesoT=pesoT
-#             )
-
-           
-           
-#             peso.save()
-
-#         except ValueError as e:
-#             mensaje_error = f"Error al procesar los datos: {e}"
-
-#     return render(request, 'crear_historialclinico.html', {'mensaje_error': mensaje_error, 'datos': datos, 'datosV': datosV})
 
 
 
@@ -419,7 +229,7 @@ def Crear_Historial_Clinico(request):
     datosV = Vacunas.objects.all()
     datosExam = ExamenCli.objects.all()
 
-    if request.method == 'POST' and request.POST.get('accion') == 'Agregar':
+    if request.POST.get('accion') == 'Agregar':
         try:
             fecha = timezone.now()
             fechadesp = request.POST.get('fechadesp')
@@ -491,7 +301,6 @@ def Crear_Historial_Clinico(request):
 
     return render(request, 'crear_historialclinico.html', {'mensaje_error': mensaje_error, 'datos': datos, 'datosV': datosV})
 
-#def crearhist(request):
 
 def Registro_Pacientes(request):
     datos = Persona.objects.all()
@@ -552,7 +361,83 @@ def Registro_Pacientes(request):
     return render(request, 'registro_pacientes.html', {'datos': datos, 'datosraza': datosraza, 'datosespecie': datosespecie, 'mensaje_error': mensaje_error})
 
 
+def get_historial_info(request, idpaciente):
+    # Suponiendo que 'idpaciente' es un campo válido en el modelo 'Historial'
+    historial = get_object_or_404(Historial, paciente__idpaciente=idpaciente)
+    
+    # Suponiendo que 'fecha' es un campo en el modelo 'Historial'
+    data = {
+        'fecha': historial.fecha,
+        # Agrega más campos según sea necesario
+    }
 
+    return JsonResponse(data)
+
+
+# Vista Historial_Clinico
+
+def Historial_Clinico(request):
+    datos = Persona.objects.all()
+    datospaciente = Paciente.objects.all()
+    datoshistorial = Historial.objects.all()
+    paciente = None
+    fecha_historial = None
+    id_paciente = None
+    nombre_paciente = None
+    historial_data = None
+
+    #print("Entrando al método Historial_Clinico")  # Mensaje de entrada al método
+
+    if  request.POST.get('btn') == 'Buscar':
+        print("Entrando al método Historial_Clinico")
+        id_paciente = request.POST.get('idPaciente')
+        if id_paciente:
+            try:
+                print("Entrando al método Historial_Clinico")
+                paciente = datospaciente.get(idpaciente=id_paciente)
+                historial = datoshistorial.filter(idpaciente_id=id_paciente).first()
+                fecha_historial = historial.fecha if historial else None
+                nombre_paciente = paciente.nombre
+
+                # Imprime para depurar
+                print(f"ID del Historial: {historial.idhistorial}")
+                print(f"Fecha: {historial.fecha}")
+
+                # Obtener datos del historial clínico para mostrar en el cuadro negro
+                historial_data = {
+                    'idhistorial': historial.idhistorial,
+                    'fecha': historial.fecha,
+                    # Agrega más campos según sea necesario
+                }
+
+            except Paciente.DoesNotExist:
+                print(f"No se encontró un paciente con id {id_paciente}")
+
+    return render(request, 'historial_clinico.html', {
+        'datos': datos,
+        'datospaciente': datospaciente,
+        'datoshistorial': datoshistorial,
+        'paciente': paciente,
+        'fecha_historial': fecha_historial,
+        'id_paciente': id_paciente,
+        'nombre_paciente': nombre_paciente,
+        'historial_data': historial_data,
+    })
+
+
+
+def get_pacientes_by_dni(request, dni):
+    pacientes = Paciente.objects.filter(
+        dni=dni).values('idpaciente', 'nombre')
+    print('Pacientes:', pacientes)  # Añade esta línea para imprimir los pacientes en la consola
+    return JsonResponse(list(pacientes), safe=False)
+
+
+def get_historial_by_paciente(request, idpaciente):
+    historial = Historial.objects.filter(
+        idpaciente=idpaciente).values('idhistorial', 'fecha')
+    print('Pacientes:', historial)  # Añade esta línea para imprimir los pacientes en la consola
+    return JsonResponse(list(historial), safe=False)
 
 
 
@@ -827,6 +712,3 @@ def chatbot(request):
 def modificar_historialclinico(request):
     return render(request, 'modificar_historialclinico.html')
 
-
-def Historial_Clinico(request):
-    return render(request, 'historial_clinico.html')

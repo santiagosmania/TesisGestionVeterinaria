@@ -153,7 +153,7 @@ class Historial(models.Model):
     idhistorial = models.IntegerField(primary_key=True)
     idpaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, db_column='idpaciente')
 
-    fecha = models.DateTimeField()
+    fecha = models.DateField()
 
     fechadesp = models.DateField()
     productodesp = models.CharField(max_length=100, default='')  # Puedes cambiar el valor predeterminado según sea necesario

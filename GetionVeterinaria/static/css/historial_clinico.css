@@ -87,3 +87,19 @@ h1{
     margin-right: 4%;
     
 }
+
+/* historial_clinico.css */
+#cuadradoNegro {
+    display: none;
+    width: 100px;
+    height: 100px;
+    background-color: black;
+    position: absolute;
+    top: 60%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.mostrar {
+    display: block !important; /* Añade !important para asegurar que la clase tenga prioridad */
+}
