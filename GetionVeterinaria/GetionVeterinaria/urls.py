@@ -34,7 +34,7 @@ urlpatterns = [
     path('modificar-pacientes/', app.views.Modificar_Pacientes, name="modificar_pacientes"),
     path('verificar_dni/', app.views.verificar_dni, name='verificar_dni'),
     path('verificar_turno/', app.views.reservar_turno, name='reservar_turno'),
-    path('historial-clinico/', app.views.Historial_Clinico, name="historial_clinico"),
+    path('historial-clinico/', app.views.Historial_clinico, name="historial_clinico"),
     path('crear-historialclinico/', app.views.Crear_Historial_Clinico, name="crear_historialclinico"),
     path('obtener_horas_ocupadas/', app.views.obtener_horas_ocupadas, name='obtener_horas_ocupadas'),
     path('modificar-historialclinico/', app.views.modificar_historialclinico, name="modificar_historialclinico"),
@@ -44,6 +44,7 @@ urlpatterns = [
     path('filtrar-turnos/', PruebaFecha.as_view(), name='filtrar_turnos'),
     path('get_especies_by_raza/<int:idraza>/', app.views.get_especies_by_raza, name='get_especies_by_raza'),
     path('get_pacientes_by_dni/<int:dni>/', app.views.get_pacientes_by_dni, name='get_pacientes_by_dni'),
+    path('get_pacientes_by_dni2/<int:dni>/', app.views.get_pacientes_by_dni2, name='get_pacientes_by_dni2'),
     path('get_historial_info/<int:idpaciente>/', app.views.get_historial_info, name='get_historial_info'),
     path('get_historial_by_paciente/<int:idpaciente>/', app.views.get_historial_by_paciente, name='get_historial_by_paciente'),
     

@@ -62,7 +62,7 @@ class Especie(models.Model):
 # continúe eliminando también los modelos dependientes.
 class Paciente(models.Model):
     idpaciente = models.IntegerField(primary_key=True)
-    dni = models.OneToOneField(
+    dni = models.ForeignKey(
         Persona, db_column='dni', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
     idraza = models.ForeignKey(

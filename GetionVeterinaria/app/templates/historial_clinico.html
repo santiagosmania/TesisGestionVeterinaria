@@ -45,7 +45,7 @@
         <br>
         <br> 
         
-        <label for="dni">DNI</label>
+        <label for="dni" >DNI</label>
         <select name="dni" id="dni">
             {% for dato in datos %}
             <option value="{{ dato.dni }}">{{ dato.dni }}</option>
@@ -53,9 +53,9 @@
         </select>
 
         <label for="idpaciente">Paciente</label>
-        <select name="idpaci" id="idPaci">
+        <select  name="idpaci" id="idPaci" >
             {% for dato in datospaciente %}
-                <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
+                <option value="{{ dato.idpaciente }}">
                 {{ dato.nombre }}
                 </option>
             {% endfor %}
@@ -82,22 +82,45 @@
 
     </form>
     
-   <!-- historial_clinico.html -->
-    <div id="cuadradoNegro" class="{% if mostrar_cuadrado %}mostrar{% endif %}">
-        {% if historial_data %}
-            <p>Información del Historial Clínico:</p>
-            <ul>
-                <li>ID del Historial: {{ historial_data.idhistorial }}</li>
-                <li>Fecha: {{ historial_data.fecha }}</li>
-            <!-- Agrega más elementos según sea necesario -->
-            </ul>
-        {% else %}
-            <p>No se encontró información del historial clínico.</p>
-        {% endif %}
-    </div>  
-       
-  
     
+    {% if clientes %}
+        <h3>Información del Cliente(s)</h3>
+        {% for cliente in clientes %}
+            <p>DNI: {{ cliente.dni }}</p>
+            <p>Nombre: {{ cliente.nombre }}</p>
+            <!-- Otros campos del cliente según tu modelo -->
+        {% endfor %}
+    {% endif %}
+
+    {% if pacientes %}
+        <h3>Información del Paciente(s)</h3>
+    
+        {% for paciente in  pacientes %}
+          
+            
+            {% if paciente.idpaciente == valorlista|default:-1|add:"0" %}
+              
+                <p>ID Paciente: {{ paciente.idpaciente }}</p>
+                <p>Nombre: {{ paciente.nombre }}</p>
+            <!-- Otros campos del paciente según tu modelo -->
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+
+
+    {% if historiales %}
+        <h3>Historiales Clínicos</h3>
+        {% for historial in historiales %}
+            {% for lista_paciente in lista_id_pacientes %}
+                {% if lista_paciente == valorlista|default:-1|add:"0" %}
+                    <p>Fecha: {{ historial.fecha}}</p>
+                    <p>Consulta: {{ historial.consulta}}</p>
+                {% endif %}
+            
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
    <script>
     document.addEventListener('DOMContentLoaded', function() {
         var formulario = document.getElementById('frm');
@@ -195,7 +218,7 @@
 </script>
 
 
-<script>
+<!-- <script>
     document.addEventListener('DOMContentLoaded', function () {
     var pacienteSelect = document.getElementById('idPaci');
     var fechaSelect = document.getElementById('fecha');
@@ -221,7 +244,7 @@
             .catch(error => console.error('Error:', error));
     });
 });
-</script>
+</script> -->
 
 
 </body>

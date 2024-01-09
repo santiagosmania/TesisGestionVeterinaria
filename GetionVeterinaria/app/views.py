@@ -374,59 +374,104 @@ def get_historial_info(request, idpaciente):
     return JsonResponse(data)
 
 
-# Vista Historial_Clinico
-
-def Historial_Clinico(request):
+def Historial_clinico(request):
     datos = Persona.objects.all()
     datospaciente = Paciente.objects.all()
     datoshistorial = Historial.objects.all()
-    paciente = None
-    fecha_historial = None
-    id_paciente = None
-    nombre_paciente = None
-    historial_data = None
+    valorlista = request.POST.get('idpaci')
+    clientes = None
+    historiales = None
+    pacientes = None
+    selected_paciente_id = None
+    id_pacientes = Historial.objects.values_list('idpaciente', flat=True).distinct()
+    lista_id_pacientes = list(id_pacientes)
 
-    #print("Entrando al método Historial_Clinico")  # Mensaje de entrada al método
+    if request.method == 'POST':
+        selected_dni = request.POST.get('dni')
+        selected_paciente_id = request.POST.get('idpaciente')
 
-    if  request.POST.get('btn') == 'Buscar':
-        print("Entrando al método Historial_Clinico")
-        id_paciente = request.POST.get('idPaciente')
-        if id_paciente:
-            try:
-                print("Entrando al método Historial_Clinico")
-                paciente = datospaciente.get(idpaciente=id_paciente)
-                historial = datoshistorial.filter(idpaciente_id=id_paciente).first()
-                fecha_historial = historial.fecha if historial else None
-                nombre_paciente = paciente.nombre
-
-                # Imprime para depurar
-                print(f"ID del Historial: {historial.idhistorial}")
-                print(f"Fecha: {historial.fecha}")
-
-                # Obtener datos del historial clínico para mostrar en el cuadro negro
-                historial_data = {
-                    'idhistorial': historial.idhistorial,
-                    'fecha': historial.fecha,
-                    # Agrega más campos según sea necesario
-                }
-
-            except Paciente.DoesNotExist:
-                print(f"No se encontró un paciente con id {id_paciente}")
-
-    return render(request, 'historial_clinico.html', {
+        if selected_dni:
+            clientes = Persona.objects.filter(dni=selected_dni)
+            pacientes = Paciente.objects.filter(dni__in=clientes)
+           
+            
+        if selected_paciente_id:
+            historiales = Historial.objects.filter(idpaciente__in=pacientes)
+        else:
+            historiales = None
+        
+         
+    
+    context = {
+        'clientes': clientes,
+        'pacientes': pacientes,
+        'historiales': historiales,
         'datos': datos,
         'datospaciente': datospaciente,
         'datoshistorial': datoshistorial,
-        'paciente': paciente,
-        'fecha_historial': fecha_historial,
-        'id_paciente': id_paciente,
-        'nombre_paciente': nombre_paciente,
-        'historial_data': historial_data,
-    })
+        'valorlista': valorlista,
+        'lista_id_pacientes':lista_id_pacientes
+    }
+
+    return render(request, 'historial_clinico.html', context)
+
+# def Historial_Clinico(request):
+#     datos = Persona.objects.all()
+#     datospaciente = Paciente.objects.all()
+#     datoshistorial = Historial.objects.all()
+#     paciente = None
+#     fecha_historial = None
+#     id_paciente = None
+#     nombre_paciente = None
+#     historial_data = None
+
+#     #print("Entrando al método Historial_Clinico")  # Mensaje de entrada al método
+
+#     if  request.POST.get('btn') == 'Buscar':
+#         print("Entrando al método Historial_Clinico")
+#         id_paciente = request.POST.get('idPaciente')
+#         if id_paciente:
+#             try:
+#                 print("Entrando al método Historial_Clinico")
+#                 paciente = datospaciente.get(idpaciente=id_paciente)
+#                 historial = datoshistorial.filter(idpaciente_id=id_paciente).first()
+#                 fecha_historial = historial.fecha if historial else None
+#                 nombre_paciente = paciente.nombre
+
+#                 # Imprime para depurar
+#                 print(f"ID del Historial: {historial.idhistorial}")
+#                 print(f"Fecha: {historial.fecha}")
+
+#                 # Obtener datos del historial clínico para mostrar en el cuadro negro
+#                 historial_data = {
+#                     'idhistorial': historial.idhistorial,
+#                     'fecha': historial.fecha,
+#                     # Agrega más campos según sea necesario
+#                 }
+
+#             except Paciente.DoesNotExist:
+#                 print(f"No se encontró un paciente con id {id_paciente}")
+
+#     return render(request, 'historial_clinico.html', {
+#         'datos': datos,
+#         'datospaciente': datospaciente,
+#         'datoshistorial': datoshistorial,
+#         'paciente': paciente,
+#         'fecha_historial': fecha_historial,
+#         'id_paciente': id_paciente,
+#         'nombre_paciente': nombre_paciente,
+#         'historial_data': historial_data,
+#     })
 
 
 
 def get_pacientes_by_dni(request, dni):
+    pacientes = Paciente.objects.filter(
+        dni=dni).values('idpaciente', 'nombre')
+    print('Pacientes:', pacientes)  # Añade esta línea para imprimir los pacientes en la consola
+    return JsonResponse(list(pacientes), safe=False)
+
+def get_pacientes_by_dni2(request, dni):
     pacientes = Paciente.objects.filter(
         dni=dni).values('idpaciente', 'nombre')
     print('Pacientes:', pacientes)  # Añade esta línea para imprimir los pacientes en la consola
