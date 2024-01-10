@@ -386,22 +386,35 @@ def Historial_clinico(request):
     id_pacientes = Historial.objects.values_list('idpaciente', flat=True).distinct()
     lista_id_pacientes = list(id_pacientes)
 
+    if request.POST.get('accion') == 'Agregar':
+        return redirect('ver_historialclinico')
+    
     if request.method == 'POST':
         selected_dni = request.POST.get('dni')
         selected_paciente_id = request.POST.get('idpaciente')
-
+        
+            # Ajusta la URL 'otra_pagina' según tu configuración
+            
+       
         if selected_dni:
             clientes = Persona.objects.filter(dni=selected_dni)
             pacientes = Paciente.objects.filter(dni__in=clientes)
-           
-            
+
         if selected_paciente_id:
             historiales = Historial.objects.filter(idpaciente__in=pacientes)
+
+        
         else:
             historiales = None
-        
-         
-    
+
+       
+
+        # Verifica si se hizo clic en el botón "Ver"
+      
+
+    historial_idpaciente = historiales[0].idpaciente if historiales and historiales.exists() else None
+    paciente_idpaciente = datospaciente[0].idpaciente if datospaciente and datospaciente.exists() else None
+
     context = {
         'clientes': clientes,
         'pacientes': pacientes,
@@ -409,11 +422,14 @@ def Historial_clinico(request):
         'datos': datos,
         'datospaciente': datospaciente,
         'datoshistorial': datoshistorial,
-        'valorlista': valorlista,
-        'lista_id_pacientes':lista_id_pacientes
+        'valorlista': int(valorlista) if valorlista is not None else None,
+        'lista_id_pacientes': lista_id_pacientes,
+        'historial_idpaciente': historial_idpaciente,
+        'paciente_idpaciente': paciente_idpaciente,
     }
 
     return render(request, 'historial_clinico.html', context)
+    
 
 # def Historial_Clinico(request):
 #     datos = Persona.objects.all()
@@ -755,5 +771,30 @@ def chatbot(request):
 
 
 def modificar_historialclinico(request):
+   
+     
     return render(request, 'modificar_historialclinico.html')
 
+
+def Ver_HistorialClinico(request, idhistorial, idvacuna, idpeso, idpaciente, idespecie, idraza, idexamenc):
+    try:
+        id_historial = int(idhistorial)
+        historial = Historial.objects.get(idhistorial=id_historial)
+        id_vacuna = int(idvacuna)
+        vacunas = Vacunas.objects.get(idvacuna=id_vacuna)
+        id_peso = int(idpeso)
+        peso = Peso.objects.get(idpeso=id_peso)
+        id_paciente = int(idpaciente)
+        paciente = Paciente.objects.get(idpaciente=id_paciente)
+        id_especie = int(idespecie)
+        especie = Especie.objects.get(idespecie=id_especie)
+        id_raza = int(idraza)
+        raza = Raza.objects.get(idraza=id_raza)
+        id_examenc = int(idexamenc)
+        examen = ExamenCli.objects.get(idexamenc=id_examenc)
+
+
+        print("Datos del historial:", historial.__dict__)
+        return render(request, 'ver_historialclinico.html', {'historial': historial, 'vacunas': vacunas, 'peso': peso, 'paciente': paciente, 'especie': especie, 'raza': raza, 'examen':  examen})
+    except (ValueError, TypeError, Historial.DoesNotExist):
+        return redirect('ver_historialclinico')

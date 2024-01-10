@@ -77,7 +77,7 @@ class Paciente(models.Model):
     estado = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.idraza}'
+        return f'{self.idpaciente}'
 
     class Meta:
         db_table = 'pacientes'
@@ -92,7 +92,7 @@ class Event(models.Model):
     dni = models.CharField(max_length=10)
 
     email = models.CharField(max_length=100)
-    celular = models.CharField(max_length=100)
+    celular = models.CharField(max_length=255)
 
     def __str__(self):
         return f"Event on {self.fecha} at {self.hora} "
@@ -171,6 +171,8 @@ class Historial(models.Model):
 
     def __str__(self):
         return f'{self.idhistorial}'
+    def __str__(self):
+        return f'{self.idpaciente}'
 
     class Meta:
         db_table = 'historial'

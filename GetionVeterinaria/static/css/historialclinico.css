@@ -65,7 +65,7 @@ h1{
     background-color: #9034db; /* Color de fondo */
     color: #ffffff; /* Color de texto */
     border: none; /* Elimina el borde */
-    padding: 10px 20px; /* Relleno interno */
+    padding: 10px; /* Relleno interno */
     border-radius: 20px; /* Borde redondeado */
     cursor: pointer; /* Cambia el cursor al pasar por encima */
     font-size: 16px; /* Tamaño de fuente */
@@ -102,4 +102,46 @@ h1{
 
 .mostrar {
     display: block !important; /* Añade !important para asegurar que la clase tenga prioridad */
+}
+
+
+
+.center-content {
+    
+    border: 1px solid black; /* Define el borde negro */
+    /* Agrega un espacio interno para separar el contenido del borde */
+    margin-left: 35%; /* Ajusta según sea necesario para el espaciado entre cajas */
+    width: 800px;
+    height: 375px;
+       
+    border: 2px solid black;
+    padding: 20px;
+}
+
+.cuadrado-clientes,
+.cuadrado-pacientes,
+.cuadrado-historiales {
+    display: none; /* Ocultar inicialmente */
+    margin-top: 20px;
+}
+
+.cuadrado {
+    border: 1px solid #000;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.mostrar {
+    display: block; /* Mostrar cuando la clase 'mostrar' está presente */
+}
+.box {
+    border: 1px solid black; /* Define el borde negro */
+    padding: 10px; /* Agrega un espacio interno para separar el contenido del borde */
+    margin-bottom: 20px; /* Ajusta según sea necesario para el espaciado entre cajas */
+    color: white;
+}
+
+img{
+    width: 200px;
+    height: 200px;
 }

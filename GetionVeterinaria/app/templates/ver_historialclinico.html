@@ -1,0 +1,188 @@
+{% extends 'layout.html' %} 
+{% load static %} 
+{%block content%}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/crearhist.css' %}"
+    />
+    <title>Crear Historial Clinico</title>
+  </head>
+
+  <body>
+    <form method="POST" action="{% url 'ver_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna idpeso=historial.idpeso idpaciente=historial.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza  idexamenc=historial.idexamenc  %}" class="frm">
+      {% csrf_token %}
+
+
+    
+    <h2>DATOS DEL PACIENTE</h2>
+
+    <br>
+    <br>
+    {% if paciente %}
+      <label for="idpaciente">Nombre del Paciente</label>
+      <input type="text" name="idpaciente" id="idpaciente" class="txt" value="{{ paciente.nombre}}">
+      <br>
+      <br>
+      <label for="sexo" >Sexo</label>
+      <input type="text" name="sexo" class="txt" value="{{ paciente.sexo}}" >
+
+     
+      <label for="fechana">Fecha de Nacimiento</label>
+      <input type="text" name="fechana"  class="txt" id="fechana" value="{{ paciente.fechana}}"  required /> 
+
+    {% endif %}
+     
+    {% if especie %}
+    
+      <label for="raza">Raza</label>
+      <input type="text" name="especie"  class="txt" id="especie"  class="txt"  value="{{ especie.especie}}" required />
+      {% if raza %}
+        <label for="especie">Especie</label>
+        
+        <input type="text" name="raza"  class="txt" id="raza"  class="txt"  value="{{ raza.raza}}"  required />
+
+        <br>
+        <br />
+        <br />
+      {% endif %}  
+      
+    {% endif %} 
+
+     
+    {% if peso %}
+      <label for="idpeso"> Peso</label>
+      <input type="text" name="idpeso" id="idpeso" class="txt" value="{{ peso.peso}} KG ">
+
+    {% endif %}
+    <br>
+    <br>
+    <br>
+    <br>
+
+    
+    <h2>ANAMNESICOS</h2>
+
+    <br>
+    <br>
+    <br>
+    {% if historial %}
+    <label for="fechadesp">ULTIMA DESPARACITACION</label>
+    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp }}" required>
+      
+    <label for="productodesp"> PRODUCTO </label>
+    <input type="text" name="productodesp"  class="txt"  id="productodesp" value="{{ historial.productodesp }}">
+    
+    
+
+    
+    {% if vacunas %}
+
+
+      <label for="idvacuna">Vacuna</label>
+      <input type="text" name="idvacuna" id="idvacuna" class="txt" value="{{ vacunas.vacuna }}">
+      <br>
+      <br> 
+    <label for="laboratorio"> Laboratorio </label>
+    <input type="text" name="laboratorio"  class="txt"  id="marca" value="{{ vacunas.laboratorio }}">
+      
+    {% endif %}  
+
+   
+
+      <label for="lotev"> LOTE </label>
+      <input type="text" name="lotev" class="txt" id="lotev"  value="{{ historial.lotev }}"  required>
+
+      <br />
+      <br />
+
+      <br>
+      <br>
+   
+      <h2>EXAMEN CLINICO</h2>
+
+      <br />
+      <br />
+    {% if examen %}
+      <label for="ganglios">GANGLIOS</label>
+      <input type="text" name="ganglios" class="txt" id="ganglios" value="{{ examen.ganglios }}" required />
+
+      <label for="respiratoria">RESPIRATORIA</label>
+      <input type="text" name="respiratoria" class="txt" id="respiratoria" value="{{ examen.respiratoria }}" required />
+
+      <label for="cardiaca">CARDIACA</label>
+      <input type="text" name="cardiaca" class="txt" id="cardiaca" value="{{ examen.cardiaca }}" required />
+      
+      <br>
+      <br>
+      
+      
+      <label for="mucosas">MUCOSAS</label>
+      <input type="text" name="mucosas"  class="txt" id="mucosas" value="{{ examen.mucosas }}" required />
+
+      <label for="temperatura">TEMPERATURA</label>
+      <input type="text" name="temperatura" class="txt" id="temperatura" value="{{ examen.temperatura }}" required />
+
+      <label for="pulso">PULSO</label>
+      <input type="text" name="pulso" class="txt" id="pulso"  value="{{ examen.pulso }}" required />
+    {% endif %}
+
+      <br>
+      <br>
+      <h2>HISTORIA REPRODUCTIVA</h2>
+    
+      <br>
+      <br>
+      
+
+      <label for="fechacelo">ULTIMO CELO</label>
+      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo }}"  required>
+      
+      <label for="fechapart">FECHA ULTIMO PARTO </label>
+      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart }}"  required>
+        
+      
+      <label for="estirilizado">ESTERILIZADO</label>
+      SI <input type="radio" name="estirilizado" id="estirilizado" value="si"  {% if historial and historial.estirilizado == 'si' %}checked{% endif %}>
+      NO <input type="radio" name="estirilizado" id="estirilizado" value="no" {% if historial and historial.estirilizado == 'no' %}checked{% endif %}>
+
+      <!-- <label for="estirilizado">estirilizado</label>
+      <input type="text" name="estirilizado" class="txt" id="estirilizado" required /> -->
+
+      <br />
+      <br />
+      <br>
+      <br>
+      <h2>MOTIVO DE CONSULTA</h2>
+      <br>
+      <br>
+      
+      
+      <textarea name="consulta" id="consulta" cols="100" rows="10"  required>{{ historial.consulta }}</textarea>
+
+      <br />
+      <br />
+
+
+     
+      <h2>DESCRIPCION DE HALLAZGO</h2>
+      <br>
+      <br>
+      <textarea name="hallazgo" id="hallazgo" cols="100" rows="10" required> {{ historial.hallazgo }}</textarea>
+      
+
+      <br>
+      <br>
+      <a href="{% url 'historial_clinico' %}" class="btn">Volver</a>
+    {% endif %}
+    </form>
+    
+  </body>
+</html>
+
+{%endblock%}

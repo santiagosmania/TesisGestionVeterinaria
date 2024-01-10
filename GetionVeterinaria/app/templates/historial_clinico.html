@@ -7,7 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/historial_clinico.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/historialclinico.css' %}">
     <title>Historial Clinico</title>
 </head>
 <body>
@@ -17,7 +17,7 @@
         <!-- los valores de las cajas de texto se mandan mediante la solicitud post, pero 
         tambien los name que se le asignan ayuda al pasaje de datos ya que es mas facil la interpretacion-->
 
-    
+            
         <label for="dni">DNI</label>
         <select name="dni" id="dniCliente">
             {% for dato in datos %}
@@ -77,85 +77,54 @@
 
 
    
-        <input type="submit" value="Buscar" name="btn" id="btn">
+        <input type="submit" value="Buscar" class="btn"   name="btn" id="btn">
 
 
     </form>
+    <br>
+    <br>
     
-    
-    {% if clientes %}
-        <h3>Información del Cliente(s)</h3>
-        {% for cliente in clientes %}
-            <p>DNI: {{ cliente.dni }}</p>
-            <p>Nombre: {{ cliente.nombre }}</p>
-            <!-- Otros campos del cliente según tu modelo -->
-        {% endfor %}
-    {% endif %}
-
-    {% if pacientes %}
-        <h3>Información del Paciente(s)</h3>
-    
-        {% for paciente in  pacientes %}
-          
+    {% if clientes or pacientes or historiales %}
             
-            {% if paciente.idpaciente == valorlista|default:-1|add:"0" %}
-              
-                <p>ID Paciente: {{ paciente.idpaciente }}</p>
-                <p>Nombre: {{ paciente.nombre }}</p>
-            <!-- Otros campos del paciente según tu modelo -->
-            {% endif %}
-        {% endfor %}
-    {% endif %}
 
-
-
-    {% if historiales %}
-        <h3>Historiales Clínicos</h3>
-        {% for historial in historiales %}
-            {% for lista_paciente in lista_id_pacientes %}
-                {% if lista_paciente == valorlista|default:-1|add:"0" %}
-                    <p>Fecha: {{ historial.fecha}}</p>
-                    <p>Consulta: {{ historial.consulta}}</p>
+                       
+    {% for historial in historiales %}       
+        {% for cliente in clientes %} 
+            {% for paciente in pacientes %}
+                {% if paciente.idpaciente == valorlista|default:-1|add:"0" %}
+                    <p>Debug - valorlista: {{ valorlista }}</p>
+                    <p>Debug - paciente.idpaciente: {{ paciente.idpaciente }}</p> 
+                    <p>Debug - historial.idpaciente: {{ historial.idpaciente }}</p>
+                   
+                        <p>Debug - historial.idpaciente: {{ historial.idpaciente }}</p>
+                        <p>Debug - paciente.idpaciente: {{ paciente.idpaciente }}</p> 
+                        <img src="../../static/img/usuario.jpg" alt="">
+                        <div class="center-content">
+                            <p>Nombre del Dueño: {{ cliente.nombre }}</p> 
+                            <p>ID Paciente: {{ paciente.idpaciente }}</p>
+                            <p>Nombre: {{ paciente.nombre }}</p>
+                            <p>Fecha: {{ historial.fecha }}</p>
+                            <p>Consulta: {{ historial.consulta }}</p>
+                            <p>Debug - historial.idhistorial: {{ historial.idhistorial }}</p>
+                                <a href="{% url 'ver_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna idpeso=historial.idpeso idpaciente=historial.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza idexamenc=historial.idexamenc %}" class="btn">Ver</a>
+                                <a href="{% url 'modificar_historialclinico' %}" class="btn">Modificar</a>
+                                
+                                <!-- <input type="submit" name="accion" class="btn" value="Ver">   -->
+                                <!-- <input type="submit" name="accion" class="btn" value="Modificar"> -->
+                          
+                        </div>
+                        <br>
+                    
                 {% endif %}
-            
             {% endfor %}
         {% endfor %}
+    {% endfor %}
+       
+           
+       
     {% endif %}
-   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var formulario = document.getElementById('frm');
-        if (formulario) {
-            formulario.addEventListener('submit', function() {
-                mostrarCuadradoNegro();
-            });
-        }
+    
 
-        var buscarFormulario = document.getElementById('buscarFormulario');
-        if (buscarFormulario) {
-            buscarFormulario.addEventListener('submit', function() {
-                mostrarCuadradoNegro();
-            });
-        }
-
-        // Mostrar el cuadrado negro si la información persiste en localStorage
-        if (localStorage.getItem('mostrar_cuadrado')) {
-            var cuadradoNegro = document.getElementById('cuadradoNegro');
-            if (cuadradoNegro) {
-                cuadradoNegro.classList.add('mostrar');
-            }
-        }
-    });
-
-    function mostrarCuadradoNegro() {
-        var cuadradoNegro = document.getElementById('cuadradoNegro');
-        if (cuadradoNegro) {
-            cuadradoNegro.classList.add('mostrar');
-
-            // Guardar el estado en localStorage para que persista entre recargas
-            localStorage.setItem('mostrar_cuadrado', 'true');
-        }
-    }
-</script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var dniSelect = document.getElementById('dniCliente');
