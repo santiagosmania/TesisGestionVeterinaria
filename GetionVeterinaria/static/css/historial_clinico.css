@@ -12,7 +12,7 @@ body {
     
     background-image: url('../img/fondo.png'); /* Reemplaza 'ruta-de-tu-imagen.jpg' con la ruta de tu imagen de fondo */
    
-
+     /* Fija la imagen de fondo */
    
     
 }
@@ -112,8 +112,8 @@ h1{
     /* Agrega un espacio interno para separar el contenido del borde */
     margin-left: 35%; /* Ajusta según sea necesario para el espaciado entre cajas */
     width: 800px;
-    height: 375px;
-       
+    height: 300px;
+    text-align: center;
     border: 2px solid black;
     padding: 20px;
 }
@@ -144,4 +144,19 @@ h1{
 img{
     width: 200px;
     height: 200px;
+}
+
+
+.content-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text-content {
+    flex-grow: 1;
+}
+
+.image-content {
+    margin-left: 40%; /* Adjust the margin as needed */
 }

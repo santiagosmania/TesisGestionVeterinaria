@@ -61,7 +61,7 @@ class Especie(models.Model):
 # on_delete=models.CASCADEdice a Django que active en cascada el efecto de eliminación, es decir,
 # continúe eliminando también los modelos dependientes.
 class Paciente(models.Model):
-    idpaciente = models.IntegerField(primary_key=True)
+    idpaciente = models.AutoField(primary_key=True)
     dni = models.ForeignKey(
         Persona, db_column='dni', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=100)
@@ -77,7 +77,7 @@ class Paciente(models.Model):
     estado = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.idpaciente}'
+        return f'{self.idpaciente} '
 
     class Meta:
         db_table = 'pacientes'
@@ -151,12 +151,11 @@ class ExamenCli(models.Model):
 
 class Historial(models.Model):
     idhistorial = models.IntegerField(primary_key=True)
-    idpaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE, db_column='idpaciente')
+    idpaciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
 
     fecha = models.DateField()
-
     fechadesp = models.DateField()
-    productodesp = models.CharField(max_length=100, default='')  # Puedes cambiar el valor predeterminado según sea necesario
+    productodesp = models.CharField(max_length=100, default='')
     idvacuna = models.ForeignKey(Vacunas, on_delete=models.CASCADE, db_column='idvacuna')
     lotev = models.CharField(max_length=100)
     fechacelo = models.DateField()
@@ -164,15 +163,11 @@ class Historial(models.Model):
     estirilizado = models.CharField(max_length=10)
     consulta = models.TextField(default='')
     hallazgo = models.TextField()
-    idexamenc = models.ForeignKey(
-        ExamenCli, on_delete=models.CASCADE, db_column='idexamenc')
-    idpeso = models.ForeignKey(
-        Peso, on_delete=models.CASCADE, db_column='idpeso')
+    idexamenc = models.ForeignKey(ExamenCli, on_delete=models.CASCADE, db_column='idexamenc')
+    idpeso = models.ForeignKey(Peso, on_delete=models.CASCADE, db_column='idpeso')
 
     def __str__(self):
-        return f'{self.idhistorial}'
-    def __str__(self):
-        return f'{self.idpaciente}'
+        return f'{self.idhistorial} ({self.idpaciente})'
 
     class Meta:
         db_table = 'historial'

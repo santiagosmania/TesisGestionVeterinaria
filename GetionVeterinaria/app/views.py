@@ -438,7 +438,7 @@ def Historial_clinico(request):
         'paciente_idpaciente': paciente_idpaciente,
         'idpaci': idpaci,
         'idpaciente': idpaciente,  # Pasamos idpaci al contexto
-        
+       
     }
 
     return render(request, 'historial_clinico.html', context)
@@ -786,25 +786,24 @@ def chatbot(request):
 def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpaciente, idespecie, idraza, idexamenc):
     datosVacunas = Vacunas.objects.all()
     
-    try:
-        id_historial = int(idhistorial)
-        historial = Historial.objects.get(idhistorial=id_historial)
-        id_vacuna = int(idvacuna)
-        vacunas = Vacunas.objects.get(idvacuna=id_vacuna)
-        id_peso = int(idpeso)
-        peso = Peso.objects.get(idpeso=id_peso)
-        id_paciente = int(idpaciente)
-        paciente = Paciente.objects.get(idpaciente=id_paciente)
-        id_especie = int(idespecie)
-        especie = Especie.objects.get(idespecie=id_especie)
-        id_raza = int(idraza)
-        raza = Raza.objects.get(idraza=id_raza)
-        id_examenc = int(idexamenc)
-        examen = ExamenCli.objects.get(idexamenc=id_examenc)
+   
+    id_historial = int(idhistorial)
+    historial = Historial.objects.get(idhistorial=id_historial)
+    id_vacuna = int(idvacuna)
+    vacunas = Vacunas.objects.get(idvacuna=id_vacuna)
+    id_peso = int(idpeso)
+    peso = Peso.objects.get(idpeso=id_peso)
+    id_paciente = int(idpaciente)
+    paciente = Paciente.objects.get(idpaciente=id_paciente)
+    id_especie = int(idespecie)
+    especie = Especie.objects.get(idespecie=id_especie)
+    id_raza = int(idraza)
+    raza = Raza.objects.get(idraza=id_raza)
+    id_examenc = int(idexamenc)
+    examen = ExamenCli.objects.get(idexamenc=id_examenc)
 
-        if request.method == 'POST':
+    if request.method == 'POST':
             # Actualiza los modelos con los datos del formulario
-            
             fechadesp = request.POST.get('fechadesp')
             fechadesp = datetime.strptime(fechadesp, '%d/%m/%Y').strftime('%Y-%m-%d')
             productodesp = request.POST.get('productodesp')
@@ -813,6 +812,7 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             fechacelo = datetime.strptime(fechacelo, '%d/%m/%Y').strftime('%Y-%m-%d')
             fechapart = request.POST.get('fechapart')
             fechapart = datetime.strptime(fechapart, '%d/%m/%Y').strftime('%Y-%m-%d')
+
             estirilizado = request.POST.get('estirilizado')
             consulta = request.POST.get('consulta')
             hallazgo = request.POST.get('hallazgo')
@@ -856,9 +856,8 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             paciente.save()
             examen.save()
 
-        return render(request, 'modificar_historialclinico.html', {'historial': historial, 'vacunas': vacunas, 'peso': peso, 'paciente': paciente, 'especie': especie, 'raza': raza, 'examen': examen, 'datosVacunas': datosVacunas})
-    except (ValueError, TypeError, Historial.DoesNotExist):
-        return redirect('modificar_historialclinico')
+    return render(request, 'modificar_historialclinico.html', {'historial': historial, 'vacunas': vacunas, 'peso': peso, 'paciente': paciente, 'especie': especie, 'raza': raza, 'examen': examen, 'datosVacunas': datosVacunas})
+   
 
 def convertir_a_formato_correcto(fecha_str, formato_entrada, formato_salida):
     if fecha_str:
@@ -885,9 +884,10 @@ def Ver_HistorialClinico(request, idhistorial, idvacuna, idpeso, idpaciente, ide
         especie = Especie.objects.get(idespecie=id_especie)
         id_raza = int(idraza)
         raza = Raza.objects.get(idraza=id_raza)
+        #id_examenc = int(idexamenc)
+        #examen = ExamenCli.objects.get(idexamenc=id_examenc)
         id_examenc = int(idexamenc)
         examen = ExamenCli.objects.get(idexamenc=id_examenc)
-
 
         print("Datos del historial:", historial.__dict__)
         return render(request, 'ver_historialclinico.html', {'historial': historial, 'vacunas': vacunas, 'peso': peso, 'paciente': paciente, 'especie': especie, 'raza': raza, 'examen':  examen})

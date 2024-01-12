@@ -37,10 +37,10 @@ urlpatterns = [
     path('historial-clinico/', app.views.Historial_clinico, name="historial_clinico"),
     path('crear-historialclinico/<int:idpaciente>/', app.views.Crear_Historial_Clinico, name='crear_historialclinico'),
     path('obtener_horas_ocupadas/', app.views.obtener_horas_ocupadas, name='obtener_horas_ocupadas'),
-    path('modificar-historialclinico/<int:idhistorial>/<int:idvacuna>/<int:idpeso>/<int:idpaciente>/<int:idespecie>/<int:idraza>/<int:idexamenc>', app.views.modificar_historialclinico, name="modificar_historialclinico"),
+    path('modificar-historialclinico/<int:idhistorial>/<int:idvacuna>/<int:idpeso>/<int:idpaciente>/<int:idespecie>/<int:idraza>/<int:idexamenc>/', app.views.modificar_historialclinico, name="modificar_historialclinico"),
     path('chat/', app.views.chatbot, name="chat_bot"),
     path('turnero/', app.views.Turnero, name="turnero"),
-    path('ver-historialclinico/<int:idhistorial>/<int:idvacuna>/<int:idpeso>/<int:idpaciente>/<int:idespecie>/<int:idraza>/<int:idexamenc>', app.views.Ver_HistorialClinico, name='ver_historialclinico'),
+    path('ver-historialclinico/<int:idhistorial>/<int:idvacuna>/<int:idpeso>/<int:idpaciente>/<int:idespecie>/<int:idraza>/<int:idexamenc>/', app.views.Ver_HistorialClinico, name='ver_historialclinico'),
     
    # path('create-event/', CreateEventView.as_view(), name='create_event'),
     path('filtrar-turnos/', PruebaFecha.as_view(), name='filtrar_turnos'),

@@ -15,7 +15,7 @@
   </head>
 
   <body>
-    <form method="POST" action="{% url 'ver_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna idpeso=historial.idpeso idpaciente=historial.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza  idexamenc=historial.idexamenc  %}" class="frm">
+    <form method="POST" action="{% url 'ver_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna.idvacuna idpeso=historial.idpeso.idpeso idpaciente=historial.idpaciente.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza idexamenc=historial.idexamenc.idexamenc %}" class="frm">
       {% csrf_token %}
 
 
