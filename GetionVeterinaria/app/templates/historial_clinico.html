@@ -34,8 +34,14 @@
             {% endfor %}
         </select>
 
-
-
+            
+     
+            
+        
+        <input type="submit" name="accion" class="btn" value="Agregar" />
+       
+            
+            
         <br>
         <br>
         <br>
@@ -52,7 +58,7 @@
             {% endfor %}
         </select>
 
-        <label for="idpaciente">Paciente</label>
+        <label for="idpaci">Paciente</label>
         <select  name="idpaci" id="idPaci" >
             {% for dato in datospaciente %}
                 <option value="{{ dato.idpaciente }}">
@@ -87,38 +93,40 @@
     {% if clientes or pacientes or historiales %}
             
 
-                       
-    {% for historial in historiales %}       
-        {% for cliente in clientes %} 
-            {% for paciente in pacientes %}
-                {% if paciente.idpaciente == valorlista|default:-1|add:"0" %}
-                    <p>Debug - valorlista: {{ valorlista }}</p>
-                    <p>Debug - paciente.idpaciente: {{ paciente.idpaciente }}</p> 
-                    <p>Debug - historial.idpaciente: {{ historial.idpaciente }}</p>
-                   
-                        <p>Debug - historial.idpaciente: {{ historial.idpaciente }}</p>
-                        <p>Debug - paciente.idpaciente: {{ paciente.idpaciente }}</p> 
-                        <img src="../../static/img/usuario.jpg" alt="">
-                        <div class="center-content">
-                            <p>Nombre del Dueño: {{ cliente.nombre }}</p> 
-                            <p>ID Paciente: {{ paciente.idpaciente }}</p>
-                            <p>Nombre: {{ paciente.nombre }}</p>
-                            <p>Fecha: {{ historial.fecha }}</p>
-                            <p>Consulta: {{ historial.consulta }}</p>
-                            <p>Debug - historial.idhistorial: {{ historial.idhistorial }}</p>
-                                <a href="{% url 'ver_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna idpeso=historial.idpeso idpaciente=historial.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza idexamenc=historial.idexamenc %}" class="btn">Ver</a>
-                                <a href="{% url 'modificar_historialclinico' %}" class="btn">Modificar</a>
-                                
-                                <!-- <input type="submit" name="accion" class="btn" value="Ver">   -->
-                                <!-- <input type="submit" name="accion" class="btn" value="Modificar"> -->
                           
-                        </div>
-                        <br>
+        {% for historial in historiales %}        
+            {% for cliente in clientes %}  
+                {% for paciente in pacientes %} 
+                    <!-- {% for vec in vectoridpacientehist %} -->
+                  
+                            {% if  paciente.idpaciente == idpaci and idpaci == vec %}
+                                <p>Debug - vector: {{ vec}}</p>
+                                <p>Debug - lista: {{ idpaci}}</p>
+                                <!-- <p>Debug - paciente.idpaciente: {{ paciente.idpaciente }}</p>  -->
+                                <!-- <p>Debug - historial.idpaciente: {{ historial.idpaciente }}</p> -->
+                                    <h2>hola</h2>
+                           
+                                <img src="../../static/img/usuario.jpg" alt="">
+                                <div class="center-content">
+                                    <p>Nombre del Dueño: {{ cliente.nombre }}</p>  
+                                    <p>ID Paciente: {{ paciente.idpaciente }}</p>
+                                    <p>Nombre: {{ paciente.nombre }}</p> 
+                                    <p>Fecha: {{ historial.fecha }}</p>
+                                    <p>Consulta: {{ historial.consulta }}</p>
+                                    <p>Debug - historial.idhistorial: {{ historial.idhistorial }}</p> 
+                                    <a href="{% url 'ver_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna idpeso=historial.idpeso idpaciente=historial.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza idexamenc=historial.idexamenc %}" class="btn">Ver</a>
+                                    <a href="{% url 'modificar_historialclinico' idhistorial=historial.idhistorial idvacuna=historial.idvacuna idpeso=historial.idpeso idpaciente=historial.idpaciente idespecie=historial.idpaciente.idespecie.idespecie idraza=historial.idpaciente.idespecie.idraza.idraza idexamenc=historial.idexamenc %}" class="btn">Modificar</a>
+                                
+                                   
+                          
+                                </div>
+                                <br>
+                                {% endif %}
                     
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-    {% endfor %}
+                    <!-- {% endfor %} -->
+                {% endfor %} 
+            {% endfor %} 
+        {% endfor %} 
        
            
        

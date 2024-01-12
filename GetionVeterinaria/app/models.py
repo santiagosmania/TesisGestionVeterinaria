@@ -107,7 +107,7 @@ class Peso(models.Model):
     # Assuming idespecie is a foreign key to Especie.
   
     def __str__(self):
-        return f'{self.peso}'  # Corrige aquí para que coincida con el nombre del campo
+        return f'{self.idpeso}'  # Corrige aquí para que coincida con el nombre del campo
 
     class Meta:
         db_table = 'peso'

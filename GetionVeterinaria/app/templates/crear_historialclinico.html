@@ -15,22 +15,19 @@
   </head>
 
   <body>
-    <form method="POST" action="{% url 'crear_historialclinico' %}" class="frm">
+    <form method="POST" action="{% url 'crear_historialclinico' idpaciente%}" class="frm">
       {% csrf_token %}
 
      
       <h2>DATOS DEL PACIENTE</h2>
       <br />
       <br />
-      <label for="idpaciente">ID</label>
+      <labe for="idpaciente">ID</label>
 
-        <select name="idpaciente" id="idpaciente">
-            {% for dato in datos %}
-            <option value="{{ dato.idpaciente }}" {% if paciente and paciente.idpaciente == dato.idpaciente %}selected{% endif %}>
-                {{ dato.idpaciente }},{{ dato.nombre}}
-            </option>
-            {% endfor %}
-        </select>
+       
+
+
+        <p>Opción seleccionada en el formulario: {{ idpaciente }}</p>
       <!-- <label for="nombre">Nombre</label>
       <input type="text" name="nombre"  class="txt"  id="nombre" required />
       <span id="nombre-exist" style="color: red"></span>
@@ -51,6 +48,9 @@
       
       <label for="fechana">Fecha de Nacimiento</label>
       <input type="text" name="fechana"  class="txt" id="fechana" required /> -->
+<!-- 
+      <label for="idpaciente">idpaciente</label>
+      <input type="text" name="idpaciente" class="txt" id="idpaciente" required /> -->
 
       <label for="peso">peso</label>
       <input type="text" name="peso"  class="txt" id="peso" required />
