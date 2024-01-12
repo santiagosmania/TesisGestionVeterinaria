@@ -26,26 +26,26 @@
     <br>
     {% if paciente %}
       <label for="idpaciente">Nombre del Paciente</label>
-      <input type="text" name="idpaciente" id="idpaciente" class="txt" value="{{ paciente.nombre}}">
+      <input type="text" name="idpaciente" id="idpaciente" class="txt" value="{{ paciente.nombre}}"disabled>
       <br>
       <br>
       <label for="sexo" >Sexo</label>
-      <input type="text" name="sexo" class="txt" value="{{ paciente.sexo}}" >
+      <input type="text" name="sexo" class="txt" value="{{ paciente.sexo}}" disabled>
 
      
       <label for="fechana">Fecha de Nacimiento</label>
-      <input type="text" name="fechana"  class="txt" id="fechana" value="{{ paciente.fechana}}"  required /> 
+      <input type="text" name="fechana"  class="txt" id="fechana" value="{{ paciente.fechana|date:'d/m/Y'}}"  disabled /> 
 
     {% endif %}
      
     {% if especie %}
     
       <label for="raza">Raza</label>
-      <input type="text" name="especie"  class="txt" id="especie"  class="txt"  value="{{ especie.especie}}" required />
+      <input type="text" name="especie"  class="txt" id="especie"  class="txt"  value="{{ especie.especie}}" disabled />
       {% if raza %}
         <label for="especie">Especie</label>
         
-        <input type="text" name="raza"  class="txt" id="raza"  class="txt"  value="{{ raza.raza}}"  required />
+        <input type="text" name="raza"  class="txt" id="raza"  class="txt"  value="{{ raza.raza}}"  disabled />
 
         <br>
         <br />
@@ -57,7 +57,7 @@
      
     {% if peso %}
       <label for="idpeso"> Peso</label>
-      <input type="text" name="idpeso" id="idpeso" class="txt" value="{{ peso.peso}} KG ">
+      <input type="text" name="idpeso" id="idpeso" class="txt" value="{{ peso.peso}} KG "disabled>
 
     {% endif %}
     <br>
@@ -73,10 +73,10 @@
     <br>
     {% if historial %}
     <label for="fechadesp">ULTIMA DESPARACITACION</label>
-    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp }}" required>
+    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp|date:'d/m/Y' }}" disabled>
       
     <label for="productodesp"> PRODUCTO </label>
-    <input type="text" name="productodesp"  class="txt"  id="productodesp" value="{{ historial.productodesp }}">
+    <input type="text" name="productodesp"  class="txt"  id="productodesp" value="{{ historial.productodesp }}"disabled>
     
     
 
@@ -85,18 +85,18 @@
 
 
       <label for="idvacuna">Vacuna</label>
-      <input type="text" name="idvacuna" id="idvacuna" class="txt" value="{{ vacunas.vacuna }}">
+      <input type="text" name="idvacuna" id="idvacuna" class="txt" value="{{ vacunas.vacuna }}"disabled>
       <br>
       <br> 
     <label for="laboratorio"> Laboratorio </label>
-    <input type="text" name="laboratorio"  class="txt"  id="marca" value="{{ vacunas.laboratorio }}">
+    <input type="text" name="laboratorio"  class="txt"  id="marca" value="{{ vacunas.laboratorio }}"disabled>
       
     {% endif %}  
 
    
 
       <label for="lotev"> LOTE </label>
-      <input type="text" name="lotev" class="txt" id="lotev"  value="{{ historial.lotev }}"  required>
+      <input type="text" name="lotev" class="txt" id="lotev"  value="{{ historial.lotev }}"  disabled>
 
       <br />
       <br />
@@ -110,26 +110,26 @@
       <br />
     {% if examen %}
       <label for="ganglios">GANGLIOS</label>
-      <input type="text" name="ganglios" class="txt" id="ganglios" value="{{ examen.ganglios }}" required />
+      <input type="text" name="ganglios" class="txt" id="ganglios" value="{{ examen.ganglios }}" disabled />
 
       <label for="respiratoria">RESPIRATORIA</label>
-      <input type="text" name="respiratoria" class="txt" id="respiratoria" value="{{ examen.respiratoria }}" required />
+      <input type="text" name="respiratoria" class="txt" id="respiratoria" value="{{ examen.respiratoria }}" disabled />
 
       <label for="cardiaca">CARDIACA</label>
-      <input type="text" name="cardiaca" class="txt" id="cardiaca" value="{{ examen.cardiaca }}" required />
+      <input type="text" name="cardiaca" class="txt" id="cardiaca" value="{{ examen.cardiaca }}" disabled />
       
       <br>
       <br>
       
       
       <label for="mucosas">MUCOSAS</label>
-      <input type="text" name="mucosas"  class="txt" id="mucosas" value="{{ examen.mucosas }}" required />
+      <input type="text" name="mucosas"  class="txt" id="mucosas" value="{{ examen.mucosas }}" disabled />
 
       <label for="temperatura">TEMPERATURA</label>
-      <input type="text" name="temperatura" class="txt" id="temperatura" value="{{ examen.temperatura }}" required />
+      <input type="text" name="temperatura" class="txt" id="temperatura" value="{{ examen.temperatura }}" disabled />
 
       <label for="pulso">PULSO</label>
-      <input type="text" name="pulso" class="txt" id="pulso"  value="{{ examen.pulso }}" required />
+      <input type="text" name="pulso" class="txt" id="pulso"  value="{{ examen.pulso }}" disabled/>
     {% endif %}
 
       <br>
@@ -141,15 +141,15 @@
       
 
       <label for="fechacelo">ULTIMO CELO</label>
-      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo }}"  required>
+      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo|date:'d/m/Y' }}"  disabled>
       
       <label for="fechapart">FECHA ULTIMO PARTO </label>
-      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart }}"  required>
+      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart|date:'d/m/Y' }}"  disabled>
         
       
       <label for="estirilizado">ESTERILIZADO</label>
-      SI <input type="radio" name="estirilizado" id="estirilizado" value="si"  {% if historial and historial.estirilizado == 'si' %}checked{% endif %}>
-      NO <input type="radio" name="estirilizado" id="estirilizado" value="no" {% if historial and historial.estirilizado == 'no' %}checked{% endif %}>
+      SI <input type="radio" name="estirilizado" id="estirilizado" value="si"  {% if historial and historial.estirilizado == 'si' %}checked{% endif %} disabled>
+      NO <input type="radio" name="estirilizado" id="estirilizado" value="no" {% if historial and historial.estirilizado == 'no' %}checked{% endif %} disabled>
 
       <!-- <label for="estirilizado">estirilizado</label>
       <input type="text" name="estirilizado" class="txt" id="estirilizado" required /> -->
@@ -163,7 +163,7 @@
       <br>
       
       
-      <textarea name="consulta" id="consulta" cols="100" rows="10"  required>{{ historial.consulta }}</textarea>
+      <textarea name="consulta" id="consulta" cols="100" rows="10"  disabled>{{ historial.consulta }}</textarea>
 
       <br />
       <br />
@@ -173,7 +173,7 @@
       <h2>DESCRIPCION DE HALLAZGO</h2>
       <br>
       <br>
-      <textarea name="hallazgo" id="hallazgo" cols="100" rows="10" required> {{ historial.hallazgo }}</textarea>
+      <textarea name="hallazgo" id="hallazgo" cols="100" rows="10" disabled> {{ historial.hallazgo }}</textarea>
       
 
       <br>

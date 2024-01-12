@@ -37,7 +37,7 @@ class Raza(models.Model):
     raza = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.raza}'
+        return f'{self.idraza}'
 
     class Meta:
         db_table = 'razas'
@@ -51,7 +51,7 @@ class Especie(models.Model):
         Raza, db_column='idraza', on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.especie}'
+        return f'{self.idespecie}'
 
     class Meta:
         db_table = 'especies'

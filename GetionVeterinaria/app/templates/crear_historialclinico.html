@@ -15,42 +15,34 @@
   </head>
 
   <body>
-    <form method="POST" action="{% url 'crear_historialclinico' idpaciente%}" class="frm">
+    <form method="POST" action="{% url 'crear_historialclinico' idpaciente  %}" class="frm">
       {% csrf_token %}
 
-     
-      <h2>DATOS DEL PACIENTE</h2>
-      <br />
-      <br />
-      <labe for="idpaciente">ID</label>
+    {% for paciente in datos %}
+      {% if paciente.idpaciente == idpaciente %}
+        
+              <h2>DATOS DEL PACIENTE</h2>
+              <br />
+              <br />
+              <label for="idpaciente">Nombre del Paciente</label>
+              <input type="text" name="idpaciente" id="idpaciente" class="txt" value="{{ paciente.nombre }}" disabled>
+              <br>
+              <br>
+              <label for="sexo">Sexo</label>
+              <input type="text" name="sexo" class="txt" value="{{ paciente.sexo }}" disabled>
+         
+              <label for="fechana">Fecha de Nacimiento</label>
+          
+              <input type="text" name="fechana" class="txt" id="fechana" value="{{ paciente.fechana|date:'d/m/Y' }}" disabled/>
+       
+      {% endif %}
+    {% endfor %}
+
+   
 
        
-
-
-        <p>Opción seleccionada en el formulario: {{ idpaciente }}</p>
-      <!-- <label for="nombre">Nombre</label>
-      <input type="text" name="nombre"  class="txt"  id="nombre" required />
-      <span id="nombre-exist" style="color: red"></span>
-    
-      <label for="sexo" >Sexo</label>
-   
-        F <input type="radio" value="F" name="sexo"  /> 
-        M <input type="radio" value="M"  class="txt" name="sexo" /> 
-    
-
-      <label for="especie">Especie</label>
-      <input type="text" name="especie"  class="txt" id="especie" required />
-
-      <br>
-      <br />
-      <br />
-
       
-      <label for="fechana">Fecha de Nacimiento</label>
-      <input type="text" name="fechana"  class="txt" id="fechana" required /> -->
-<!-- 
-      <label for="idpaciente">idpaciente</label>
-      <input type="text" name="idpaciente" class="txt" id="idpaciente" required /> -->
+
 
       <label for="peso">peso</label>
       <input type="text" name="peso"  class="txt" id="peso" required />

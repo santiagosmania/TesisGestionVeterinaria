@@ -90,6 +90,40 @@
     <br>
     <br>
     
+ 
+        
+    {% for paciente in pacientes %}
+        {% for historial in historiales %}     
+            {% if paciente.idpaciente == idpaci %}
+                {% if historial.idpaciente ==  1%}
+                    <p>Debug - vector: {{ vec}}</p>
+                    <p>Debug - lista: {{ idpaci}}</p>
+    <!-- <p>Debug - paciente.idpaciente: {{ paciente.idpaciente }}</p>  -->
+    <!-- <p>Debug - historial.idpaciente: {{ historial.idpaciente }}</p> -->
+                    <h2>hola</h2>
+
+                    <img src="../../static/img/usuario.jpg" alt="">
+                    <div class="center-content">
+                        <p>Nombre del Dueño: {{ cliente.nombre }}</p>  
+                        <p>ID Paciente: {{ paciente.idpaciente }}</p>
+                        <p>Nombre: {{ paciente.nombre }}</p> 
+                        <p>Fecha: {{ historial.fecha }}</p>
+                        <p>Consulta: {{ historial.consulta }}</p>
+                        <p>Debug - historial.idhistorial: {{ historial.idhistorial }}</p> 
+     
+
+       
+
+                    </div>
+                    <br>
+                {% endif %}    
+            {% endif %}
+        {% endfor %} 
+    {% endfor %} 
+
+
+
+
     {% if clientes or pacientes or historiales %}
             
 

@@ -228,6 +228,8 @@ def Crear_Historial_Clinico(request,idpaciente):
     datos = Paciente.objects.all()
     datosV = Vacunas.objects.all()
     datosExam = ExamenCli.objects.all()
+    datosRaza = Raza.objects.all()
+    datosEspecie = Especie.objects.all()
 
     if request.POST.get('accion') == 'Agregar':
         try:
@@ -247,12 +249,15 @@ def Crear_Historial_Clinico(request,idpaciente):
             pulso = request.POST.get('pulso')
             respiratoria = request.POST.get('respiratoria')
             peso = request.POST.get('peso')
-
-            paciente = Paciente.objects.get(pk=idpaciente)
             idvacuna = request.POST.get('idvacuna')
 
             #paciente = Paciente.objects.get(pk=idpaciente)
             vacuna = Vacunas.objects.get(pk=idvacuna)
+
+            
+            paciente = Paciente.objects.get(pk=idpaciente)
+           
+           
 
             # Formatear las fechas si es necesario
             if fechadesp and '/' in fechadesp:
@@ -288,7 +293,8 @@ def Crear_Historial_Clinico(request,idpaciente):
                 consulta=consulta,
                 hallazgo=hallazgo,
                 idexamenc=examenc,
-                idpeso=peso_instance
+                idpeso=peso_instance,
+            
             )
             historial.save()
 
@@ -299,7 +305,7 @@ def Crear_Historial_Clinico(request,idpaciente):
         except ValueError as e:
             mensaje_error = f"Error al procesar los datos: {e}"
 
-    return render(request, 'crear_historialclinico.html', {'mensaje_error': mensaje_error, 'datos': datos, 'datosV': datosV, 'idpaciente': idpaciente})
+    return render(request, 'crear_historialclinico.html', {'mensaje_error': mensaje_error, 'datos': datos, 'datosV': datosV, 'idpaciente': idpaciente, 'datosRaza': datosRaza, 'datosEspecie': datosEspecie})
 
 
 def Registro_Pacientes(request):
@@ -390,6 +396,8 @@ def Historial_clinico(request):
 
     if request.POST.get('accion') == 'Agregar':
        idpaciente = request.POST.get('idpaciente')
+      
+         
        return redirect('crear_historialclinico', idpaciente=idpaciente)
 
     if request.method == 'POST':
@@ -430,6 +438,7 @@ def Historial_clinico(request):
         'paciente_idpaciente': paciente_idpaciente,
         'idpaci': idpaci,
         'idpaciente': idpaciente,  # Pasamos idpaci al contexto
+        
     }
 
     return render(request, 'historial_clinico.html', context)
