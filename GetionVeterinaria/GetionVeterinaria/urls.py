@@ -41,7 +41,7 @@ urlpatterns = [
     path('chat/', app.views.chatbot, name="chat_bot"),
     path('turnero/', app.views.Turnero, name="turnero"),
     path('ver-historialclinico/<int:idhistorial>/<int:idvacuna>/<int:idpeso>/<int:idpaciente>/<int:idespecie>/<int:idraza>/<int:idexamenc>/', app.views.Ver_HistorialClinico, name='ver_historialclinico'),
-    
+
    # path('create-event/', CreateEventView.as_view(), name='create_event'),
     path('filtrar-turnos/', PruebaFecha.as_view(), name='filtrar_turnos'),
     path('get_especies_by_raza/<int:idraza>/', app.views.get_especies_by_raza, name='get_especies_by_raza'),

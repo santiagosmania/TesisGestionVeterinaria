@@ -17,6 +17,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
+import pytz
+from decimal import Decimal
 
 def index(request):
     if request.method == 'POST':
@@ -222,7 +224,6 @@ def Modificar_Pacientes(request):
 
 
 
-
 def Crear_Historial_Clinico(request,idpaciente):
     mensaje_error = None
     datos = Paciente.objects.all()
@@ -231,9 +232,14 @@ def Crear_Historial_Clinico(request,idpaciente):
     datosRaza = Raza.objects.all()
     datosEspecie = Especie.objects.all()
 
-    if request.POST.get('accion') == 'Agregar':
+    if request.method == 'POST':
         try:
-            fecha = timezone.now()
+            
+            timezone_argentina = pytz.timezone('America/Argentina/Buenos_Aires')
+            fecha_actual_argentina = timezone.now().astimezone(timezone_argentina)
+            fecha = fecha_actual_argentina.date()
+            print('hola', fecha)
+           
             fechadesp = request.POST.get('fechadesp')
             fechacelo = request.POST.get('fechacelo')
             fechapart = request.POST.get('fechapart')
@@ -251,7 +257,7 @@ def Crear_Historial_Clinico(request,idpaciente):
             peso = request.POST.get('peso')
             idvacuna = request.POST.get('idvacuna')
 
-            #paciente = Paciente.objects.get(pk=idpaciente)
+            paciente = Paciente.objects.get(pk=idpaciente)
             vacuna = Vacunas.objects.get(pk=idvacuna)
 
             
@@ -259,11 +265,11 @@ def Crear_Historial_Clinico(request,idpaciente):
            
            
 
-            # Formatear las fechas si es necesario
+         
             if fechadesp and '/' in fechadesp:
                 fechadesp = datetime.strptime(fechadesp, '%d/%m/%Y').strftime('%Y-%m-%d')
             if fechacelo and '/' in fechacelo:
-                fechacelo = datetime.strptime(fechacelo, '%d/%m/%Y').strftime('%Y-%m-%d')
+                 fechacelo = datetime.strptime(fechacelo, '%d/%m/%Y').strftime('%Y-%m-%d')
             if fechapart and '/' in fechapart:
                 fechapart = datetime.strptime(fechapart, '%d/%m/%Y').strftime('%Y-%m-%d')
 
@@ -296,6 +302,8 @@ def Crear_Historial_Clinico(request,idpaciente):
                 idpeso=peso_instance,
             
             )
+           
+          
             historial.save()
 
             print("Información del historial insertada correctamente.")
@@ -303,9 +311,9 @@ def Crear_Historial_Clinico(request,idpaciente):
             print("Nombre de la Vacuna:", vacuna.vacuna)
 
         except ValueError as e:
-            mensaje_error = f"Error al procesar los datos: {e}"
+             mensaje_error = f"Error al procesar los datos: {e}"
 
-    return render(request, 'crear_historialclinico.html', {'mensaje_error': mensaje_error, 'datos': datos, 'datosV': datosV, 'idpaciente': idpaciente, 'datosRaza': datosRaza, 'datosEspecie': datosEspecie})
+    return render(request, 'crear_historial_clinico.html', {'mensaje_error': mensaje_error, 'datos': datos, 'datosV': datosV, 'idpaciente': idpaciente, 'datosRaza': datosRaza, 'datosEspecie': datosEspecie})
 
 
 def Registro_Pacientes(request):
@@ -792,7 +800,7 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
     id_vacuna = int(idvacuna)
     vacunas = Vacunas.objects.get(idvacuna=id_vacuna)
     id_peso = int(idpeso)
-    peso = Peso.objects.get(idpeso=id_peso)
+    peso = Peso.objects.get(idpeso=id_peso) #*esta es la variable que almacena el objeto
     id_paciente = int(idpaciente)
     paciente = Paciente.objects.get(idpaciente=id_paciente)
     id_especie = int(idespecie)
@@ -804,6 +812,7 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
 
     if request.method == 'POST':
             # Actualiza los modelos con los datos del formulario
+
             fechadesp = request.POST.get('fechadesp')
             fechadesp = datetime.strptime(fechadesp, '%d/%m/%Y').strftime('%Y-%m-%d')
             productodesp = request.POST.get('productodesp')
@@ -813,6 +822,9 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             fechapart = request.POST.get('fechapart')
             fechapart = datetime.strptime(fechapart, '%d/%m/%Y').strftime('%Y-%m-%d')
 
+            nuevo_peso_str = request.POST.get('peso') #se pone un nombre diferente ya que el codigo puede interpretar que nos referimos a la 
+                                                      #peso que almacena el objeto *
+            nuevo_peso_str = ''.join(filter(str.isdigit, nuevo_peso_str))
             estirilizado = request.POST.get('estirilizado')
             consulta = request.POST.get('consulta')
             hallazgo = request.POST.get('hallazgo')
@@ -829,6 +841,8 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             #fechapart = convertir_a_formato_correcto(fechapart, '%m/%d/%Y', '%Y-%m-%d')
             vacuna = Vacunas.objects.get(pk=idvacuna)
 
+            nuevo_peso = Decimal(nuevo_peso_str) if nuevo_peso_str else None
+            peso.peso = nuevo_peso
             historial.fechadesp = fechadesp
             historial.productodesp = productodesp
             historial.lotev = lotev
@@ -847,14 +861,14 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             historial.idvacuna = vacuna
 
            
-            
-
-
-
             # Guarda los cambios
+            peso.save()
             historial.save()
+            
             paciente.save()
             examen.save()
+
+            
 
     return render(request, 'modificar_historialclinico.html', {'historial': historial, 'vacunas': vacunas, 'peso': peso, 'paciente': paciente, 'especie': especie, 'raza': raza, 'examen': examen, 'datosVacunas': datosVacunas})
    

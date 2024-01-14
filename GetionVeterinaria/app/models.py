@@ -34,7 +34,7 @@ class Persona(models.Model):
 class Raza(models.Model):
     idraza = models.IntegerField(primary_key=True)
     # You need to specify the max_length for this field.
-    raza = models.CharField(max_length=50)
+    raza = models.CharField(max_length=50, default='')
 
     def __str__(self):
         return f'{self.idraza}'
@@ -45,7 +45,7 @@ class Raza(models.Model):
 
 class Especie(models.Model):
     idespecie = models.IntegerField(primary_key=True)
-    especie = models.CharField(max_length=20)
+    especie = models.CharField(max_length=20, default='')
     # Assuming idespecie is a foreign key to Especie.
     idraza = models.ForeignKey(
         Raza, db_column='idraza', on_delete=models.CASCADE)
@@ -155,13 +155,13 @@ class Historial(models.Model):
 
     fecha = models.DateField()
     fechadesp = models.DateField()
-    productodesp = models.CharField(max_length=100, default='')
+    productodesp = models.CharField(max_length=100)
     idvacuna = models.ForeignKey(Vacunas, on_delete=models.CASCADE, db_column='idvacuna')
     lotev = models.CharField(max_length=100)
     fechacelo = models.DateField()
     fechapart = models.DateField()
     estirilizado = models.CharField(max_length=10)
-    consulta = models.TextField(default='')
+    consulta = models.TextField()
     hallazgo = models.TextField()
     idexamenc = models.ForeignKey(ExamenCli, on_delete=models.CASCADE, db_column='idexamenc')
     idpeso = models.ForeignKey(Peso, on_delete=models.CASCADE, db_column='idpeso')

@@ -33,7 +33,7 @@
 
      
       <label for="fechana">Fecha de Nacimiento</label>
-      <input type="text" name="fechana"  class="txt" id="fechana" value="{{ paciente.fechana|date:'d/m/Y' }}"disabled/> 
+      <input type="text" name="fechana"  class="txt" id="fechana" value="{{ paciente.fechana|date:'d/m/Y' }}"disabled /> 
 
     {% endif %}
      
@@ -56,8 +56,7 @@
      
     {% if peso %}
       <label for="idpeso"> Peso</label>
-      <input type="text" name="idpeso" id="idpeso" class="txt" value="{{ peso.peso}} KG ">
-
+      <input type="text" name="peso" id="idpeso" class="txt" value="{{ peso.peso}} KG ">
     {% endif %}
     <br>
     <br>
@@ -72,10 +71,10 @@
     <br>
   {% if historial %}
     <label for="fechadesp">ULTIMA DESPARACITACION</label>
-    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp|date:'d/m/Y' }}">
+    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp|date:'d/m/Y' }}" readonly>
       
     <label for="productodesp"> PRODUCTO </label>
-    <input type="text" name="productodesp"  class="txt"  id="productodesp" value="{{ historial.productodesp }}">
+    <input type="text" name="productodesp"  class="txt"  id="productodesp" value="{{ historial.productodesp }}" >
     
     
 
@@ -143,10 +142,10 @@
       
 
       <label for="fechacelo">ULTIMO CELO</label>
-      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo|date:'d/m/Y' }}">
+      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo|date:'d/m/Y' }}" readonly>
       
       <label for="fechapart">FECHA ULTIMO PARTO </label>
-      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart|date:'d/m/Y' }}">
+      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart|date:'d/m/Y' }}" readonly>
         
       
       <label for="estirilizado">ESTERILIZADO</label>
