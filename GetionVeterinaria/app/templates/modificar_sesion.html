@@ -1,0 +1,45 @@
+{% extends 'layout.html' %} 
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'img/logo.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/crear_sesion.css' %}">
+    <title>Inicio sesión</title>
+</head>
+
+<body>
+  
+    <div class="cuadrado">
+        <h2>Modificar Sesion</h2>
+        <div class="imagen">
+            <img src="../../static/img/logo.png" alt="Mi imagen" >
+        </div>
+        
+        <form action="{% url 'modificar_sesion' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-container">
+                
+                <input type="text" name="DNI" id="DNI" placeholder="Ingresa su usuario" class="us" required>
+                <br>
+                <input type="password" name="contrasena" id="contrasena" placeholder="Ingresa su contraseña" class="con" required>
+                <input type="checkbox" class="most" id="showPassword"> <label for="showPassword" class="lbmost">Mostrar
+                    Contraseña</label>
+
+                <input type="submit" value="Modificar" id="Modificar" class="btn">
+              
+            </div>
+        </form>
+    </div>
+    <script src="{% static 'js/most_ocul.js' %}"></script>
+</body>
+
+
+</html>
+
+
+{%endblock%}

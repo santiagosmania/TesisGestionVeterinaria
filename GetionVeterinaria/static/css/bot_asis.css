@@ -89,3 +89,13 @@ body {
 .ch{
     text-align: center;
 }
+
+.nav .nav-l .nav-link-l{
+    color: white;
+    text-decoration: none;
+    margin-left: 950px;
+    font-size: 18px ;
+}
+.nav .nav-l .nav-link-l:hover{
+    color: red;
+}

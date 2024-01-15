@@ -4,7 +4,7 @@ from django.utils import timezone
 # se declara un modelo por tabla
 # se declara una clase por tabla
 
-class sesion(models.Model):
+class Sesion(models.Model):
     dni = models.CharField(max_length=20)
     contrasena = models.CharField(max_length=100, null=True)
 

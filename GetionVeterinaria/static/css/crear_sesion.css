@@ -127,6 +127,39 @@ body {
 
 }
 
+.navbar {
+    background-color: black ;
+}
+
+
+.nav .nav-l .nav-link{
+    color: white;
+}
+
+.nav .nav-l .nav-link:hover{
+    color: orange;
+}
+
+.dropdown-menu .dropdown-item {
+    color: black; 
+}
+
+.dropdown-menu  a:hover {
+    color: orange;
+   
+ }
+
+
+
+
+.dropdown-menu .item {
+    text-decoration: none;
+    color: black;
+    justify-content: center;
+    text-align: center;
+    margin-left: 10%
+
+}
 
 .imagen img{
     position:absolute;
@@ -144,4 +177,12 @@ h2{
     color: white;
 }
 
-
+.nav .nav-l .nav-link-l{
+    color: white;
+    text-decoration: none;
+    margin-left: 930px;
+    font-size: 18px ;
+}
+.nav .nav-l .nav-link-l:hover{
+    color: red;
+}

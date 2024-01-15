@@ -4,7 +4,7 @@ from django.utils import timezone
 from django.contrib.auth import authenticate, login
 from django.contrib import auth
 from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirect
-from .models import Persona, Paciente, Raza, Especie, sesion, Vacunas, ExamenCli, Peso, Historial
+from .models import Persona, Paciente, Raza, Especie, Sesion, Vacunas, ExamenCli, Peso, Historial
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
 from django.views import View
@@ -20,27 +20,75 @@ from django.http import Http404
 import pytz
 from decimal import Decimal
 
+from django.contrib.auth import logout
+
 def index(request):
     if request.method == 'POST':
         dni = request.POST.get('DNI')
         contrasena = request.POST.get('contrasena')
         try:
-            usuario = sesion.objects.get(dni=dni)  # Cambia 'username' a 'dni'
+            usuario = Sesion.objects.get(dni=dni)  # Cambia 'username' a 'dni'
             if contrasena == usuario.contrasena:  # Asegúrate de usar el campo correcto para la contraseña
                 # Contraseña válida, redirige a una página de inicio
                 return redirect('registro_clientes')
             else:
                 # Contraseña incorrecta, muestra un mensaje de error o redirige a otra página
                 return HttpResponse("Contraseña incorrecta")
-        except sesion.DoesNotExist:
+        except Sesion.DoesNotExist:
             # El usuario no existe en la base de datos
             return HttpResponse("Usuario no encontrado")
 
     return render(request, 'index.html')
 
+def Logout(request):
+    logout(request)  # Cierra la sesión del usuario
+    # Redirige a la página de inicio de sesión o a donde prefieras
+    return redirect('index') 
 
-# def Gestion_Stock(request):
-#    return render(request, 'gestion_stock.html')
+def Registro_Sesion(request):
+
+    error_message = None
+
+    if request.method == 'POST':
+        dni = request.POST.get('DNI')
+
+        if len(dni) < 8:
+            error_message = 'El DNI debe tener 8 caracteres.'
+        elif Sesion.objects.filter(dni=dni).exists():
+            error_message = 'Ya existe un registro con este DNI.'
+        else:
+            contrasena = request.POST.get('contrasena')
+      
+            sesion = Sesion(
+                dni=dni,
+                contrasena=contrasena
+            )
+            messages.success(request, "El cliente se cargo exitosamente")
+            sesion.save()
+
+    return render(request, 'crear_sesion.html', {'error_message': error_message})
+
+
+
+def Modificar_Sesion(request):
+    datos = Sesion.objects.all()
+    if request.method == 'POST':
+        dni = request.POST.get('DNI')
+        contrasena = request.POST.get('contrasena')
+        if dni:
+            try:
+                sesion = Sesion.objects.get(dni=dni)
+                sesion.contrasena = contrasena
+                sesion.save()
+            except Sesion.DoesNotExist:
+                    pass
+
+            # Limpia los campos estableciendo persona en None después de actualizar
+        
+
+    return render(request, 'modificar_sesion.html', {'datos': datos})
+
+
 
 
 def Registro_Clientes(request):
@@ -452,53 +500,6 @@ def Historial_clinico(request):
     return render(request, 'historial_clinico.html', context)
     
 
-# def Historial_Clinico(request):
-#     datos = Persona.objects.all()
-#     datospaciente = Paciente.objects.all()
-#     datoshistorial = Historial.objects.all()
-#     paciente = None
-#     fecha_historial = None
-#     id_paciente = None
-#     nombre_paciente = None
-#     historial_data = None
-
-#     #print("Entrando al método Historial_Clinico")  # Mensaje de entrada al método
-
-#     if  request.POST.get('btn') == 'Buscar':
-#         print("Entrando al método Historial_Clinico")
-#         id_paciente = request.POST.get('idPaciente')
-#         if id_paciente:
-#             try:
-#                 print("Entrando al método Historial_Clinico")
-#                 paciente = datospaciente.get(idpaciente=id_paciente)
-#                 historial = datoshistorial.filter(idpaciente_id=id_paciente).first()
-#                 fecha_historial = historial.fecha if historial else None
-#                 nombre_paciente = paciente.nombre
-
-#                 # Imprime para depurar
-#                 print(f"ID del Historial: {historial.idhistorial}")
-#                 print(f"Fecha: {historial.fecha}")
-
-#                 # Obtener datos del historial clínico para mostrar en el cuadro negro
-#                 historial_data = {
-#                     'idhistorial': historial.idhistorial,
-#                     'fecha': historial.fecha,
-#                     # Agrega más campos según sea necesario
-#                 }
-
-#             except Paciente.DoesNotExist:
-#                 print(f"No se encontró un paciente con id {id_paciente}")
-
-#     return render(request, 'historial_clinico.html', {
-#         'datos': datos,
-#         'datospaciente': datospaciente,
-#         'datoshistorial': datoshistorial,
-#         'paciente': paciente,
-#         'fecha_historial': fecha_historial,
-#         'id_paciente': id_paciente,
-#         'nombre_paciente': nombre_paciente,
-#         'historial_data': historial_data,
-#     })
 
 
 
@@ -581,51 +582,7 @@ def Turnero(request):
     })
 
 
-# class CreateEventView(View):
 
-#     def get(self, request, *args, **kwargs):
-
-#         datos = Persona.objects.all()
-#         # Obtener los parámetros de la URL
-#         fecha_seleccionada = request.GET.get('fecha')
-#         id_seleccionado = request.POST.get('idturno')
-
-#         # Obtener las horas disponibles
-#         horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
-#                              '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
-#         # Filtrar los eventos por fecha y ID
-#         turnos = Event.objects.filter(
-#             fecha=fecha_seleccionada, idturno=id_seleccionado)
-
-#         return render(request, 'turnero.html', {'datos': datos,'horas_disponibles': horas_disponibles, 'turnos': turnos})
-
-#     def post(self, request, *args, **kwargs):
-#         # Obtener los datos del formulario
-
-
-#         dni = request.POST.get('dni')
-#         email = request.POST.get('email')
-#         celular = request.POST.get('celular')
-#         fecha = request.POST.get('fecha')
-#         hora = request.POST.get('hora')
-#         tipo = request.POST.get('tipo')
-
-#         # Crear y guardar el evento en la base de datos
-#         turno = Event(dni=dni, email=email, celular=celular,
-#                       tipo=tipo, fecha=fecha, hora=hora)
-#         turno.save()
-
-#         # Enviar un correo electrónico
-#         subject = 'Veterinaria Full Campo'
-#         message = f'Su turno ha sido agendado.\nFecha: {fecha}\nHora: {hora}'
-#         from_email = 'santiago.smania@gmail.com'
-#         recipient_list = [email]
-#         send_mail(subject, message, from_email, recipient_list)
-
-#         horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
-#                              '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30', '19:00']
-
-#         return render(request, 'turnero.html', {'success_message': 'Evento creado y correo electrónico enviado', 'horas_disponibles': horas_disponibles})
 
 
 class PruebaFecha(View):
@@ -743,52 +700,6 @@ def chatbot(request):
     return render(request, 'chat.html')
 
 
-# def modificar_cliente(request):
-#     opciones = Opcion.objects.all()
-#     return render(request, 'modificar.html', {
-#         'opciones': opciones
-#         })
-
-
-# def modificar_cliente(request):
-#     table = Clientes(Person.objects.all())
-
-#     return render(request, "modificar_cliente.html", {
-#         "table": table
-#     })
-
-# def Registro_Clientes(request):
-#     if request.method == 'POST':
-#         accion = request.POST.get('accion')
-
-#         if accion == 'registrar':
-#             dni = request.POST.get('DNI')
-#             nombre = request.POST.get('nombre')
-#             contraseña = request.POST.get('contraseña')
-
-#             persona = Persona(nombre=nombre, contraseña=contraseña, DNI=dni)
-#             persona.save()
-
-#         elif accion == 'modificar':
-#             dni_modificar = request.POST.get('dni_modificar')
-#             nuevo_nombre = request.POST.get('nuevo_nombre')
-#             nueva_contraseña = request.POST.get('nueva_contraseña')
-
-#             # Buscar la persona en la base de datos
-#             try:
-#                 persona = Persona.objects.get(DNI=dni_modificar)
-#                 persona.nombre = nuevo_nombre
-#                 persona.contraseña = nueva_contraseña
-#                 persona.save()
-#                 mensaje = "Datos modificados con éxito."
-#             except Persona.DoesNotExist:
-#                 mensaje = "La persona con ese DNI no existe."
-
-#             # Agregar el mensaje a la respuesta para mostrarlo en la plantilla
-#             context = {'mensaje': mensaje}
-#             return render(request, 'registro_clientes.html', context)
-
-#     return render(request, 'registro_clientes.html')
 
 
 def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpaciente, idespecie, idraza, idexamenc):
@@ -835,10 +746,6 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             pulso = request.POST.get('pulso')
             respiratoria = request.POST.get('respiratoria')
             idvacuna = request.POST.get('idvacuna')
-            # Convierte las fechas al formato correcto
-            #fechadesp = convertir_a_formato_correcto(fechadesp, '%m/%d/%Y', '%Y-%m-%d')
-            #fechacelo = convertir_a_formato_correcto(fechacelo, '%m/%d/%Y', '%Y-%m-%d')
-            #fechapart = convertir_a_formato_correcto(fechapart, '%m/%d/%Y', '%Y-%m-%d')
             vacuna = Vacunas.objects.get(pk=idvacuna)
 
             nuevo_peso = Decimal(nuevo_peso_str) if nuevo_peso_str else None

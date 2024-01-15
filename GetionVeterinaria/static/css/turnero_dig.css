@@ -17,6 +17,16 @@ body {
     
 }
 
+h1{
+    text-align: center;
+    justify-content: center;
+}
+
+.hora-ocupada {
+    color: red;
+    /* O cualquier otro estilo que desees aplicar a las horas ocupadas */
+}
+
 .navbar {
     background-color: black ;
 }
@@ -76,4 +86,15 @@ body {
     margin-top: 5%;
     margin-right: 4%;
     
+}
+
+
+.nav .nav-l .nav-link-l{
+    color: white;
+    text-decoration: none;
+    margin-left: 950px;
+    font-size: 18px ;
+}
+.nav .nav-l .nav-link-l:hover{
+    color: red;
 }

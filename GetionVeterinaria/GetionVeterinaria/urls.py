@@ -32,6 +32,8 @@ urlpatterns = [
     path('modificar/', app.views.Modificar_Clientes, name="modificar_clientes"),
     path('registro-pacientes/', app.views.Registro_Pacientes, name="registro_pacientes"),
     path('modificar-pacientes/', app.views.Modificar_Pacientes, name="modificar_pacientes"),
+    path('registrar-sesion/', app.views.Registro_Sesion, name="registrar_sesion"),
+    path('modificar-sesion/', app.views.Modificar_Sesion, name="modificar_sesion"),
     path('verificar_dni/', app.views.verificar_dni, name='verificar_dni'),
     path('verificar_turno/', app.views.reservar_turno, name='reservar_turno'),
     path('historial-clinico/', app.views.Historial_clinico, name="historial_clinico"),
@@ -41,7 +43,7 @@ urlpatterns = [
     path('chat/', app.views.chatbot, name="chat_bot"),
     path('turnero/', app.views.Turnero, name="turnero"),
     path('ver-historialclinico/<int:idhistorial>/<int:idvacuna>/<int:idpeso>/<int:idpaciente>/<int:idespecie>/<int:idraza>/<int:idexamenc>/', app.views.Ver_HistorialClinico, name='ver_historialclinico'),
-
+     path('logout/', app.views.Logout, name='logout'),
    # path('create-event/', CreateEventView.as_view(), name='create_event'),
     path('filtrar-turnos/', PruebaFecha.as_view(), name='filtrar_turnos'),
     path('get_especies_by_raza/<int:idraza>/', app.views.get_especies_by_raza, name='get_especies_by_raza'),
