@@ -159,3 +159,10 @@ EMAIL_USE_TLS = True  # Usar TLS para conexiones seguras
 EMAIL_USE_SSL = False  # No usar SSL, ya que estamos utilizando TLS
 EMAIL_HOST_USER = 'santiago.smania@gmail.com'  # Tu dirección de correo electrónico de remitente
 EMAIL_HOST_PASSWORD = 'bjks roit tihu qnho'  # Contraseña de tu correo electrónico de remitente
+
+
+DIALOGFLOW_PROJECT_ID = 'veterinaria-vuxd'
+DIALOGFLOW_LANGUAGE_CODE = 'es'  # Cambia según el idioma que desees
+
+# Configuración para Google Cloud
+GOOGLE_APPLICATION_CREDENTIALS = 'C:/Users/santi/OneDrive/Escritorio/GestionVeterinaria/GetionVeterinaria/static/veterinaria-vuxd-f21bd360974b.json'

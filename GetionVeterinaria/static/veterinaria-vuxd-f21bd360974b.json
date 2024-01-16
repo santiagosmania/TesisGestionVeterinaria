@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "veterinaria-vuxd",
+  "private_key_id": "f21bd360974b9dc301f230cdec821972a42e9b95",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDjlS+naXIXpVrS\ndZ/R74A0ocxk4VnomdKNAX0d8G3QVpWKah/7Ke8RJfAiLLUlA3eAqzUbDuNHE9Je\nBGS+mbJdLb5qDu/QDVr0qdUxRG/aRQcBpNkt2sdx+8nMbCUfN1nkudHiJ8WN0/Pk\nezPG2OJPLfm6cpEPijHrPDAyNIPH6JpTf5lQrb8PI5oyPNbzp2/OTcFzdsm/P1+Z\n8GPeLAyypzrY676jD/P/Ip1Pn/vxEcfcaH/vuDyGTuAh2X34GhAZYQyqYnYUP1aV\nPffFNGu3NMA5pPZmYdzzqb53yN6UhtIspwmi+3/QyVpbECq+oqvnMDYKHn9UyhzM\nCBmI7mv7AgMBAAECggEAAoX+R/DstEO/xLhL1Aa/zoBCGpbqaaCAVn0/Eec/OyF6\npFTrkzFdK+eBHh/jckxI4EMFt7hr32HiN0Cn4qUkS9GHXE2wwwci4bZFsuImC1mF\n67K+5bnt9DRCgeMWa54wKk+/0AN44UsJrULgdBf7imfhblEkN/PkUc4SYBF3qe5u\nTPkydLtPS9Cmxir12LnXvNkEXQ/MFFYE8rZShl1iX2zlBcY/PaIKZg/577BDH7Qz\nrwEIoj3FT2oWiWU3aP6dyIBmbyRkqn82AA/NkqvS131ucY7yvn17TOaBCm2luTMq\n1XGXbxT9jfTgCr73HLy7cqRvvJsmolsnRqxKpzFkIQKBgQD29t5F9qv/iXtl8fv4\nAvW6/p1aXN5CZvJjkFw6AN/mfVdUZ1NYqzqBCcSn9Maq2tDgwg/Dnyvit2/8Jq5F\nBDtDgK163Zindv8z2XmlmPGOHnWjrQ6Gwb/WTdK69taXH8AO/99zCqC2BGI6jlZC\nq2uCWP83jQVaDwogJGgfSuAVzwKBgQDr6Mj7xeQlSn18iOtgOZxnxJ6YndHnHzHC\nAOk3ts/h0BwSmNb72kJp/1WA+zCiXHrlCLbO46oZ+kweaLOg7BxLQ2G+HYY7+z0k\nZhyF6RF7MkATCnQKJUIKgYFPRUinr6XerGUbSjsXrIuHRcuSOGDnEyoMrs+qnPVu\nJ4rXqhO+FQKBgQCBRqT/tqo+b7c6nDsrjlEXe6Te4nIuDDmhyLWeX0rVGpOWSSgl\n6CwN1BEvYkCEu1pP7QXXfwC4AxIJyi27TwW+xiMJh+oa732TpKm6956qqGMoNLS/\n8bf79Gz1FbUrEqG0uFg9njiWTyEkSdH5wEXcy719VMKSbAD+5k/i4Yz/nQKBgFZv\nOBRncSvomwmh8PuUoCW0+JbaXCneWBDI3Ko5JPmLkn2N2lb0pRjJIL7dSfhzAeQg\nyToMWCqkdnc9zXLMj6FT0uAhWSlo6AIKF7FIr8r/olJXpiSBeiz3PjWZIQGvbYqk\nh3b0P6pw4b5yaB/u4DJJ50I2WogcciAmBMz317vxAoGBAMbZk5DbJ9dqKlVz8cMO\ndzHbMJq0/msT88QTudz/2AfwST6FijmW7MpcBN7K8ZF+NVaSoj9OOPnSmdplcH9W\nCwmXrg7KDIA+MPg6JsmZJbVNTcBTo1rEK/QvhBoyw/8e5BrPv0SufuPTkKqQYdYb\nEGy6S9WF3U/CsVDgLJ5EJ+BN\n-----END PRIVATE KEY-----\n",
+  "client_email": "veterinaria@veterinaria-vuxd.iam.gserviceaccount.com",
+  "client_id": "109206714060807259166",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/veterinaria%40veterinaria-vuxd.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

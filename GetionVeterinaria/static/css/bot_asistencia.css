@@ -99,3 +99,8 @@ body {
 .nav .nav-l .nav-link-l:hover{
     color: red;
 }
+
+.respuesta{
+    text-align: center;
+    font-size: 23px;
+}

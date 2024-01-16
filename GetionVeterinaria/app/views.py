@@ -7,6 +7,7 @@ from django.shortcuts import render, HttpResponse, redirect, HttpResponseRedirec
 from .models import Persona, Paciente, Raza, Especie, Sesion, Vacunas, ExamenCli, Peso, Historial
 from django.shortcuts import render, get_object_or_404
 from datetime import datetime
+from datetime import date
 from django.views import View
 from django.http import JsonResponse
 from .models import Event
@@ -19,8 +20,44 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import Http404
 import pytz
 from decimal import Decimal
-
+from django.views.decorators.http import require_POST
+from google.cloud import dialogflow
+import uuid
 from django.contrib.auth import logout
+import json
+from google.oauth2 import service_account
+
+
+def chat(request):
+    if request.method == 'POST':
+        input_text = request.POST.get('input_text', '')
+        project_id = 'veterinaria-vuxd'
+        
+        # Genera un identificador único para la sesión
+        session_id = str(uuid.uuid4())
+
+        response_text = detect_intent(project_id, input_text, session_id)
+        return render(request, 'chat.html', {'response_text': response_text})
+    return render(request, 'chat.html')
+    
+  
+    
+def detect_intent(project_id, text, session_id):
+    credentials = service_account.Credentials.from_service_account_file(
+        'C:/Users/santi/OneDrive/Escritorio/GestionVeterinaria/GetionVeterinaria/static/veterinaria-vuxd-f21bd360974b.json'
+    )
+
+    session_client = dialogflow.SessionsClient(credentials=credentials)
+    session = session_client.session_path(project_id, session_id)
+
+    text_input = dialogflow.TextInput(text=text, language_code='es')  # Cambia según el idioma que desees
+    query_input = dialogflow.QueryInput(text=text_input)
+
+    response = session_client.detect_intent(request={'session': session, 'query_input': query_input})
+
+    return response.query_result.fulfillment_text
+
+
 
 def index(request):
     if request.method == 'POST':
@@ -545,15 +582,25 @@ def obtener_horas_ocupadas(request):
 
 
 def Turnero(request):
+    datos = Event.objects.all()
     error_message = None
+
+    # Vector de horas disponibles
+    #horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
+    #                     '13:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30']
+
+    fecha_predeterminada = date.today()
 
     if request.method == 'POST':
         dni = request.POST.get('dni')
         email = request.POST.get('email')
         celular = request.POST.get('celular')
-        fecha = request.POST.get('fecha')
+        fecha = request.POST.get('fecha')  # Así es como deberías obtener la fecha del formulario
         tipo = request.POST.get('tipo')
         hora_seleccionada = request.POST.get('hora')
+
+        # Asigna el valor del campo de fecha seleccionada
+        fecha_predeterminada = fecha
 
         # Obtener las horas ocupadas para la fecha seleccionada
         horas_ocupadas = list(Event.objects.filter(
@@ -579,12 +626,12 @@ def Turnero(request):
 
     return render(request, 'turnero.html', {
         'error_message': error_message,
+        #'horas_disponibles': horas_disponibles,
+        'datos': datos,
+        'fecha_predeterminada': fecha_predeterminada,  # Pasa el vector al contexto
     })
 
 
-
-
-
 class PruebaFecha(View):
     def get(self, request, *args, **kwargs):
         fecha_seleccionada = request.GET.get('fecha')
@@ -610,94 +657,94 @@ class PruebaFecha(View):
         return JsonResponse({'turnero_html': turnos_html})
 
 
-chatbot_data = {
-    "Cuales son los horarios de atencion de la veterinaria": "Hola! Nuestros horarios de atencion son de Lunes a Viernes de 09:00 a 13:00 - 15:00 a 19:00 y Sabado de 09:00 a 13:00",
-    "que dias atienden": "Hola! Nuestros horarios de atencion son de Lunes a Viernes de 09:00 a 13:00 - 15:00 a 19:00 y Sabado de 09:00 a 13:00",
-    "Cual es la ubicacion del local": "Hola! nuestra direccion es: Km 9, RP E53, Pajas Blancas, Cordoba Capital",
-    "Como hago para sacar turno": "Hola! Para sacar turno te podes comunicar con nosotros a nuestro telefono 03513143611 o por esta misma web",
-    "Cual es el telefono de la veterinaria": "Nuestro telefono es: 03513143611",
-    "Cual es el telefono del local": "Nuestro telefono es: 03513143611",
-    "Que servicios ofrecen": "Hola! en Full Campo nos especializamos en la atencion y cuidado de animales pequeños y grandes",
-    "Hacen visitas a domicilio": "Hola! ofrecemos visitas a domicilio",
-    "Tengo un caballo como hago para que lo vea un veterinario": "Hola! ofrecemos visitas a domicilio",
-    "Tengo una vaca como hago para que lo vea un veterinario": "Hola! ofrecemos visitas a domicilio",
-    "Tengo un equino como hago para que lo vea un veterinario": "Hola! ofrecemos visitas a domicilio",
-    "Tengo un perro como hago para que lo vea un veterinario": "Hola! Podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital u ofrecemos visitas a domicilio",
-    "Tengo un gato como hago para que lo vea un veterinario": "Hola! Podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital u ofrecemos visitas a domicilio",
-    "Atienden animales de granja": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
-    "Atienden animales domesticos": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
-    "Atienden perros": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
-    "Atienden animales gatos": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
-    "Atienden vacas": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
-    "Atienden aves": "Hola! No atendemos aves.",
-    "Atienden pajaros": "Hola! No atendemos aves.",
-    "Atienden loros": "Hola! No atendemos aves.",
-    "Atienden tortugas": "Hola! No atendemos reptiles.",
-    "Atienden iguana": "Hola! No atendemos reptiles.",
-    "Atienden viboras": "Hola! No atendemos reptiles.",
-    "Atienden peces": "Hola! No atendemos peces.",
-    "Atienden pirañas": "Hola! No atendemos peces.",
-    "Atienden urgencias 24 hs ": "Hola! Nuestros horarios de atencion son de Lunes a Viernes de 09:00 a 13:00 - 15:00 a 19:00 y Sabado de 09:00 a 13:00",
-    "Hacen peluqueria": "Hola! no ofrecemos servicio de peluqueria aun",
-    "Hacen cirugias": "Hola! no hacemos cirugias aun, solo atencion y cuidados de animales pequeños y grandes",
-    "Venden alimentos": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden balanceado": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden alfalfa": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden avena": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden alpiste": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden comida en lata": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden alimentos de granja": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.). También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
-    "Venden Shampoo de perros": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
-    "Venden Shampoo de gatos": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
-    "Venden crema de enjuague": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
-    "Venden perfume de perros": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc.Te esperamos en nuestro local!",
-    "Venden perfume de gatos": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
-    "Venden cepillos": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
-    "Venden rasquetas": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc.Te esperamos en nuestro local!",
-    "Venden cremas": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
-    "Venden ungüentos": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
-    "Venden desparasitante": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
-    "Venden pipetas": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
-    "Venden carretas": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
-    "Venden delantales": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
-    "Venden baldes": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
-    "Venden abono": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
-    "Como hago para comprar balanceado": "Hola! para comprar balanceado podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital o podes comunicarte con nosotros al telefono:03513143611",
-    "Como hago para comprar comida": "Hola! para comprar podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital o podes comunicarte con nosotros al telefono:03513143611",
-    "Venden medicamentos para perros": "Hola! vendemos medicamentos para pequeños y grandes animales. Te esperamos en nuestro local!",
-    "Venden correas": "Hola! contamos con una gran variedad de productos de pet-shop. Te esperamos en nuestro local!",
-    "que productos comercializan": "Hola! Ofrecemos una amplia gama de productos, tales como: Farmacos, de mantenimiento, Alimentos,Accesorios,Esteticos entre otros. Te esperamos en nuestro local!",
-    "que productos venden": "Hola! Ofrecemos una amplia gama de productos, tales como: Farmacos, de mantenimiento, Alimentos,Accesorios,Esteticos entre otros. Te esperamos en nuestro local!",
-    "Hacen ventas mayoristas": "Hola! Hacemos ventas minoristas. ",
-    "Se puede realizar encargos de productos especiales": "Hola! Para hacer tu pedido comuncate con nosotros al telefono: 03513143611 ",
-    "Ofrecen servicio de traslado": "Hola! no ofrecemos servicio de traslado. Ofrecemos atencion a domicilio",
-    "Hacen radiografias": "Hola! no ofrecemos ese servicio",
-    "Tienen catalogo de los productos": "Hola no ofrecemos catalogo. Para comprar llamanos al telefono: 03513143611 o veni a visitarnos a la direccion Km 9, RP E53, Pajas Blancas, Cordoba Capital",
-}
+# chatbot_data = {
+#     "Cuales son los horarios de atencion de la veterinaria": "Hola! Nuestros horarios de atencion son de Lunes a Viernes de 09:00 a 13:00 - 15:00 a 19:00 y Sabado de 09:00 a 13:00",
+#     "que dias atienden": "Hola! Nuestros horarios de atencion son de Lunes a Viernes de 09:00 a 13:00 - 15:00 a 19:00 y Sabado de 09:00 a 13:00",
+#     "Cual es la ubicacion del local": "Hola! nuestra direccion es: Km 9, RP E53, Pajas Blancas, Cordoba Capital",
+#     "Como hago para sacar turno": "Hola! Para sacar turno te podes comunicar con nosotros a nuestro telefono 03513143611 o por esta misma web",
+#     "Cual es el telefono de la veterinaria": "Nuestro telefono es: 03513143611",
+#     "Cual es el telefono del local": "Nuestro telefono es: 03513143611",
+#     "Que servicios ofrecen": "Hola! en Full Campo nos especializamos en la atencion y cuidado de animales pequeños y grandes",
+#     "Hacen visitas a domicilio": "Hola! ofrecemos visitas a domicilio",
+#     "Tengo un caballo como hago para que lo vea un veterinario": "Hola! ofrecemos visitas a domicilio",
+#     "Tengo una vaca como hago para que lo vea un veterinario": "Hola! ofrecemos visitas a domicilio",
+#     "Tengo un equino como hago para que lo vea un veterinario": "Hola! ofrecemos visitas a domicilio",
+#     "Tengo un perro como hago para que lo vea un veterinario": "Hola! Podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital u ofrecemos visitas a domicilio",
+#     "Tengo un gato como hago para que lo vea un veterinario": "Hola! Podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital u ofrecemos visitas a domicilio",
+#     "Atienden animales de granja": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
+#     "Atienden animales domesticos": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
+#     "Atienden perros": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
+#     "Atienden animales gatos": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
+#     "Atienden vacas": "Hola! Nos dedicamos a la atencion de pequeños y grandes animales.",
+#     "Atienden aves": "Hola! No atendemos aves.",
+#     "Atienden pajaros": "Hola! No atendemos aves.",
+#     "Atienden loros": "Hola! No atendemos aves.",
+#     "Atienden tortugas": "Hola! No atendemos reptiles.",
+#     "Atienden iguana": "Hola! No atendemos reptiles.",
+#     "Atienden viboras": "Hola! No atendemos reptiles.",
+#     "Atienden peces": "Hola! No atendemos peces.",
+#     "Atienden pirañas": "Hola! No atendemos peces.",
+#     "Atienden urgencias 24 hs ": "Hola! Nuestros horarios de atencion son de Lunes a Viernes de 09:00 a 13:00 - 15:00 a 19:00 y Sabado de 09:00 a 13:00",
+#     "Hacen peluqueria": "Hola! no ofrecemos servicio de peluqueria aun",
+#     "Hacen cirugias": "Hola! no hacemos cirugias aun, solo atencion y cuidados de animales pequeños y grandes",
+#     "Venden alimentos": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden balanceado": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden alfalfa": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden avena": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden alpiste": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden comida en lata": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.).También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden alimentos de granja": "Hola! Vendemos una amplia gama de alimentos tales como preparados sintéticos para animales domésticos y de granja (balanceado, comida en lata o sobre, aditamentos, etc.). También encontramos alimentos naturales (alfalfa, avena, alpiste, etc.). Te esperamos en nuestro local!",
+#     "Venden Shampoo de perros": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
+#     "Venden Shampoo de gatos": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
+#     "Venden crema de enjuague": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
+#     "Venden perfume de perros": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc.Te esperamos en nuestro local!",
+#     "Venden perfume de gatos": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
+#     "Venden cepillos": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc. Te esperamos en nuestro local!",
+#     "Venden rasquetas": "Hola! Vendemos una amplia gama de productos estéticos, como ser, shampoo, crema de enjuague, perfumes, corta uñas, cepillos, rasquetas, etc.Te esperamos en nuestro local!",
+#     "Venden cremas": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
+#     "Venden ungüentos": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
+#     "Venden desparasitante": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
+#     "Venden pipetas": "Hola! Vendemos una amplia gama de productos farmacéuticos como de medicamentos, cremas, ungüentos, pipetas, inyectables y otros semejantes.Te esperamos en nuestro local!",
+#     "Venden carretas": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
+#     "Venden delantales": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
+#     "Venden baldes": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
+#     "Venden abono": "Hola! vendemos una amplia gama de productos para el mantenimiento de los espacios comunes principalmente para animales grandes o de granja, como: rastrillos, carretas, delantales, guantes, baldes, abono, entre otros.Te esperamos en nuestro local!",
+#     "Como hago para comprar balanceado": "Hola! para comprar balanceado podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital o podes comunicarte con nosotros al telefono:03513143611",
+#     "Como hago para comprar comida": "Hola! para comprar podes acercarte a nuestro local en: Km 9, RP E53, Pajas Blancas, Cordoba Capital o podes comunicarte con nosotros al telefono:03513143611",
+#     "Venden medicamentos para perros": "Hola! vendemos medicamentos para pequeños y grandes animales. Te esperamos en nuestro local!",
+#     "Venden correas": "Hola! contamos con una gran variedad de productos de pet-shop. Te esperamos en nuestro local!",
+#     "que productos comercializan": "Hola! Ofrecemos una amplia gama de productos, tales como: Farmacos, de mantenimiento, Alimentos,Accesorios,Esteticos entre otros. Te esperamos en nuestro local!",
+#     "que productos venden": "Hola! Ofrecemos una amplia gama de productos, tales como: Farmacos, de mantenimiento, Alimentos,Accesorios,Esteticos entre otros. Te esperamos en nuestro local!",
+#     "Hacen ventas mayoristas": "Hola! Hacemos ventas minoristas. ",
+#     "Se puede realizar encargos de productos especiales": "Hola! Para hacer tu pedido comuncate con nosotros al telefono: 03513143611 ",
+#     "Ofrecen servicio de traslado": "Hola! no ofrecemos servicio de traslado. Ofrecemos atencion a domicilio",
+#     "Hacen radiografias": "Hola! no ofrecemos ese servicio",
+#     "Tienen catalogo de los productos": "Hola no ofrecemos catalogo. Para comprar llamanos al telefono: 03513143611 o veni a visitarnos a la direccion Km 9, RP E53, Pajas Blancas, Cordoba Capital",
+# }
 
 
-def get_best_match(user_message):
-    match = difflib.get_close_matches(
-        user_message.lower(), chatbot_data.keys(), n=1, cutoff=0.6)
-    return match[0] if match else None
+# def get_best_match(user_message):
+#     match = difflib.get_close_matches(
+#         user_message.lower(), chatbot_data.keys(), n=1, cutoff=0.6)
+#     return match[0] if match else None
 
 
-@csrf_exempt
-def chatbot(request):
-    if request.method == 'POST':
-        user_message = request.POST.get('user_message')
-        bot_response = chatbot_data.get(user_message, None)
+# @csrf_exempt
+# def chatbot(request):
+#     if request.method == 'POST':
+#         user_message = request.POST.get('user_message')
+#         bot_response = chatbot_data.get(user_message, None)
 
-        if bot_response is None:
-            best_match = get_best_match(user_message)
-            if best_match:
-                bot_response = chatbot_data[best_match]
-            else:
-                bot_response = "Lo siento, no entiendo esa pregunta."
+#         if bot_response is None:
+#             best_match = get_best_match(user_message)
+#             if best_match:
+#                 bot_response = chatbot_data[best_match]
+#             else:
+#                 bot_response = "Lo siento, no entiendo esa pregunta."
 
-        return render(request, 'chat.html', {'bot_response': bot_response})
+#         return render(request, 'chat.html', {'bot_response': bot_response})
 
-    return render(request, 'chat.html')
+#     return render(request, 'chat.html')
 
 
 

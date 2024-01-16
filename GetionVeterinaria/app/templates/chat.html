@@ -7,31 +7,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bot_asis.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bot_asistencia.css' %}">
     <title>Chatbot</title>
 </head>
 <body>
-    <div>
-        <div id="chat-box">
-            <!-- Chat messages will be displayed here -->
-        </div>
-        <div class="ch">
-            <!-- Display the bot response here after form submission -->
-            {% if bot_response %}
-            <div>Bot: {{ bot_response }}</div>
-            {% endif %}
-        </div>
-      
-        <form id="chat-form" method="post" action="{% url 'chat_bot' %}">
-            {% csrf_token %}
-            <input type="text" class="txt" name="user_message" id="user-input" placeholder="Escribe un mensaje..." oninput="showSuggestions()">
-            <br>
-            <ul id="suggestions"></ul>
-            <button type="submit" class="e">Enviar</button>
-        </form>
-    </div>
-    <!-- Incluye el archivo JavaScript aquí -->
-    <script src="{% static 'js/bot.js' %}"></script>
+    
+    <form method="post" action="{% url 'chat_bot' %}">
+        {% csrf_token %}
+        <p class="respuesta">{{ response_text }}</p>
+       
+        <input type="text" name="input_text" id="input_text" class="txt" required>
+        <button type="submit" class="e">Enviar</button>
+        
+    </form>
 </body>
 </html>
 
