@@ -143,6 +143,7 @@
             });
         });
     </script>
+    
    <script>
     document.addEventListener('DOMContentLoaded', function () {
         var dniSelect = document.getElementById('dni');
@@ -175,33 +176,7 @@
 </script>
 
 
-<!-- <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    var pacienteSelect = document.getElementById('idPaci');
-    var fechaSelect = document.getElementById('fecha');
 
-    pacienteSelect.addEventListener('change', function () {
-        var selectedPaciente = pacienteSelect.value;
-
-        // Realizar una solicitud AJAX para obtener las fechas asociadas al paciente seleccionado
-        fetch('/get_historial_by_paciente/' + selectedPaciente + '/')
-            .then(response => response.json())
-            .then(data => {
-                // Limpiar la lista actual de fechas
-                fechaSelect.innerHTML = '';
-
-                // Agregar las nuevas opciones de fechas
-                data.forEach(historial => {
-                    var option = document.createElement('option');
-                    option.value = historial.idhistorial;
-                    option.textContent = historial.fecha; // Ajusta esto según la estructura de tus datos
-                    fechaSelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Error:', error));
-    });
-});
-</script> -->
 
 
 </body>

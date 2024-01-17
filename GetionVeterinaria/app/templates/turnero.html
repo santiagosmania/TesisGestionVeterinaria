@@ -22,15 +22,15 @@
        
         
         <label for="dni">DNI</label>
-        <input type="text" id="dni" name="dni" placeholder="DNI">
+        <input type="text" id="dni" name="dni" placeholder="DNI" required>
         <br>
         <br>
         <label for="email">Email</label>
-        <input type="email" id="email" name="email" placeholder="Email">
+        <input type="email" id="email" name="email" placeholder="Email" required>
         <br>
         <br>
         <label for="celular">Celular</label>
-        <input type="text" id="celular" name="celular" placeholder="Número de celular">
+        <input type="text" id="celular" name="celular" placeholder="Número de celular" required>
         <br>
         <br>
         <label for="tipo">Tipo de turno</label>
@@ -42,7 +42,7 @@
         <br>
         
         <label for="datepicker">Día</label>
-        <input type="date" id="datepicker" name="fecha" placeholder="Seleccione una fecha">
+        <input type="date" id="datepicker" name="fecha" placeholder="Seleccione una fecha" required>
         
         <br>
         <br>
@@ -70,10 +70,9 @@
     </form>
 
     
-    <script src="{% static 'js/filtrado_hora_calendar.js' %}"></script>    
+    <script src="{% static 'js/filtrado_hora_calendario.js' %}"></script>     
   
-    
-   
+  
 
 </body>
 
