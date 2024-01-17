@@ -40,7 +40,8 @@ tiene que coincidir con el value de la lista desplegable -->
         <input type="text" name="nombre" value="{% if paciente %}{{ paciente.nombre }}{% endif %}">
         <br>
         <br>
-        <label for="raza">Raza</label>
+        <label for="especie">Especie</label>
+        
         <select name="idraza" id="idraza">
             {% for datoraza in datosraza %}
                 <option value="{{ datoraza.idraza }}" {% if paciente and paciente.idraza == datoraza.idraza %}selected{% endif %}>
@@ -50,7 +51,7 @@ tiene que coincidir con el value de la lista desplegable -->
         </select>
         <br>
         <br>
-        <label for="especie">Especie</label>
+        <label for="raza">Raza</label>
         <select name="idespecie" id="idespecie">
             {% for datoespecie in datosespecie %}
                 <option value="{{ datoespecie.idespecie }}" {% if paciente and paciente.idespecie.idespecie == datoespecie.idespecie %}selected{% endif %}>
@@ -82,11 +83,20 @@ tiene que coincidir con el value de la lista desplegable -->
         <br>
         <br>
         <label for="fechana">Fecha de nacimiento</label>
-        <input type="text" name="fechana" value="{% if paciente %}{{ paciente.fechana }}{% endif %}">
+        <input type="text" name="fechana" value="{% if paciente %}{{ paciente.fechana|date:'d/m/Y' }}{% endif %}">
         <br>
         <br>
         <input type="submit" name="accion" class="btn" value="Actualizar">
         <input type="submit" name="accion" class="btn" value="Buscar">
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+
     </form>
     <script src="{% static 'js/verificar_raza_especie.js' %}"></script>
 </body>

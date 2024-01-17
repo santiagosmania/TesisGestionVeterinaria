@@ -71,7 +71,7 @@
     <br>
   {% if historial %}
     <label for="fechadesp">ULTIMA DESPARACITACION</label>
-    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp|date:'d/m/Y' }}" readonly>
+    <input type="text" name="fechadesp" class="txt" id="fechadesp"  value="{{ historial.fechadesp|date:'d/m/Y' }}" >
       
     <label for="productodesp"> PRODUCTO </label>
     <input type="text" name="productodesp"  class="txt"  id="productodesp" value="{{ historial.productodesp }}" >
@@ -142,10 +142,10 @@
       
 
       <label for="fechacelo">ULTIMO CELO</label>
-      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo|date:'d/m/Y' }}" readonly>
+      <input type="text" name="fechacelo" class="txt" id="fechacelo"  value="{{ historial.fechacelo|date:'d/m/Y' }}" >
       
       <label for="fechapart">FECHA ULTIMO PARTO </label>
-      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart|date:'d/m/Y' }}" readonly>
+      <input type="text" name="fechapart"  class="txt"   id="fechapart" value="{{ historial.fechapart|date:'d/m/Y' }}" >
         
       
       <label for="estirilizado">ESTERILIZADO</label>
@@ -180,6 +180,14 @@
       <br>
       <br>
       <input type="submit" name="accion" class="btn" value="Modificar">
+  {% endif %}
+
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <li class="{{ message.tags }}">{{ message }}</li>
+      {% endfor %}
+  </ul>
   {% endif %}
     </form>
   

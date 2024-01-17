@@ -31,8 +31,19 @@
                     Contraseña</label>
 
                 <input type="submit" value="Registrar" id="Registrar" class="btn">
-              
+                    
+                <br>
+            
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
+
+       
         </form>
     </div>
     <script src="{% static 'js/most_ocul.js' %}"></script>

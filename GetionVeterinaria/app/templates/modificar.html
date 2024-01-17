@@ -56,6 +56,14 @@ tiene que coincidir con el value de la lista desplegable -->
         <br>
         <input type="submit" name="accion"  class="btn" value="Actualizar">
         <input type="submit" name="accion"  class="btn" value="Buscar">
+
+        {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
     </form>
 </body>
 

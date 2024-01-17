@@ -31,7 +31,8 @@
       <span id="nombre-exist" style="color: red"></span>
       <br />
       <br />
-      <label for="raza">Raza</label>
+      <label for="especie">Especie</label>
+     
       <select name="idraza" id="idraza">
         {% for datora in datosraza %}
         <option value="{{ datora.idraza }}">{{ datora.raza }}</option>
@@ -39,7 +40,7 @@
       </select>
       <br />
       <br />
-      <label for="especie">Especie</label>
+      <label for="raza">Raza</label>
       <select name="idespecie" id="idespecie">
           {% for datosep in datosespecie %}
           <option value="{{ datosep.idespecie }}">{{ datosep.especie }}</option>
@@ -74,6 +75,14 @@
       <br />
 
       <input type="submit" name="accion" class="btn" value="Agregar" />
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li class="{{ message.tags }}">{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+
     </form>
     <script src="{% static 'js/verificar_dni_nombre.js' %}"></script>
     <script src="{% static 'js/verificar_raza_especie.js' %}"></script>

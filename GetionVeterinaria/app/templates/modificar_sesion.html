@@ -31,8 +31,25 @@
                     Contraseña</label>
 
                 <input type="submit" value="Modificar" id="Modificar" class="btn">
-              
+                    
+                <br>
+                
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li class="{{ message.tags }}">{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
             </div>
+
+            {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li class="{{ message.tags }}">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
         </form>
     </div>
     <script src="{% static 'js/most_ocul.js' %}"></script>
