@@ -15,8 +15,12 @@
     <form method="post" action="{% url 'chat_bot' %}">
         {% csrf_token %}
         <p class="respuesta">{{ response_text }}</p>
+        <h2 class="title">Haz una Pregunta!</h2>
+       
        
         <input type="text" name="input_text" id="input_text" class="txt" required>
+        <br>
+        
         <button type="submit" class="e">Enviar</button>
         
     </form>

@@ -19,7 +19,7 @@ tiene que coincidir con el value de la lista desplegable -->
 <body>
     <form method="POST" action="{% url 'modificar_pacientes' %}" class="frm">
         {% csrf_token %}
-        <label for="idpaciente">ID</label>
+        <label for="idpaciente">ID Paciente</label>
 
         <select name="idpaciente" id="idpaciente">
             {% for dato in datos %}
@@ -36,7 +36,7 @@ tiene que coincidir con el value de la lista desplegable -->
         <input type="text" name="dni" value="{% if paciente and paciente.dni %}{{ paciente.dni.dni }}{% endif %}">
         <br>
         <br>
-        <label for="nombre">Nombre</label>
+        <label for="nombre">Nombre del Paciente</label>
         <input type="text" name="nombre" value="{% if paciente %}{{ paciente.nombre }}{% endif %}">
         <br>
         <br>

@@ -92,7 +92,7 @@ def Registro_Sesion(request):
         if len(dni) < 8:
             error_message = 'El DNI debe tener 8 caracteres.'
         elif Sesion.objects.filter(dni=dni).exists():
-            error_message = 'Ya existe un registro con este DNI.'
+            return HttpResponse("El usuario ya se encuentra registrado")
         else:
             contrasena = request.POST.get('contrasena')
       
@@ -107,9 +107,9 @@ def Registro_Sesion(request):
 
 
 
-
 def Modificar_Sesion(request):
     datos = Sesion.objects.all()
+    mensaje_exito = None
     
     if request.method == 'POST':
         dni = request.POST.get('DNI')
@@ -119,14 +119,14 @@ def Modificar_Sesion(request):
                 sesion = Sesion.objects.get(dni=dni)
                 sesion.contrasena = contrasena
                 sesion.save()
+                mensaje_exito = "La sesión se modificó exitosamente"
             except Sesion.DoesNotExist:
-                    pass
+               return HttpResponse("Usuario no encontrado")
 
-            # Limpia los campos estableciendo persona en None después de actualizar
-        messages.success(request, "La sesion se modifico exitosamente")
+    if mensaje_exito:
+        messages.success(request, mensaje_exito)
 
     return render(request, 'modificar_sesion.html', {'datos': datos})
-
 
 
 
