@@ -68,14 +68,18 @@
         </select>
    
         <input type="submit" value="Buscar" class="btn"   name="btn" id="btn">
-
-
+ 
+        {% for mensaje in mensajes %}
+        <div class="alert alert-success" role="alert">
+            {{ mensaje }}
+        </div>
+    {% endfor %}
+    
     </form>
     <br>
     <br>
     
- 
-        
+    
     {% for paciente in pacientes %}
         {% for historial in historiales %}
             {% for cliente in clientes %}    
@@ -106,13 +110,9 @@
             {% endfor %}         
         {% endfor %} 
     {% endfor %} 
-
-
-
-
-   
     
-
+    
+  
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var dniSelect = document.getElementById('dniCliente');

@@ -14,6 +14,7 @@ from .models import Event
 from django.template.loader import render_to_string
 from django.contrib import messages
 import calendar
+from django.core.exceptions import ValidationError
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_GET
 from django.views.decorators.csrf import csrf_exempt
@@ -506,22 +507,32 @@ def Historial_clinico(request):
     idpaci = None  # Initialize idpaci variable
     idpaciente = None  # Initialize selected_value variable
 
+    
     if request.POST.get('accion') == 'Agregar':
-       idpaciente = request.POST.get('idpaciente')
-      
-         
-       return redirect('crear_historialclinico', idpaciente=idpaciente)
+        try:
+            idpaciente = request.POST.get('idpaciente')
+        # Puedes realizar otras operaciones aquí si es necesario
 
+            return redirect('crear_historialclinico', idpaciente=idpaciente)
+        except Exception as e:
+        # Manejar la excepción aquí, puedes registrar el error o devolver un JsonResponse
+            return JsonResponse({'error_message': 'Necesita seleccionar un paciente'})
+    
     if request.method == 'POST':
         selected_dni = request.POST.get('dni')
         selected_paciente_id = request.POST.get('idpaciente')
         
         try:
-            idpaciente = int(request.POST.get('idpaci'))
+            idpaciente_str = request.POST.get('idpaci')
+            if idpaciente_str is None:
+                raise ValidationError("IDPaci is None")
+            
+            idpaciente = int(idpaciente_str)
             paciente = get_object_or_404(Paciente, pk=idpaciente)
             idpaci = idpaciente  # Pasamos el idpaci al contexto
-        except (Paciente.DoesNotExist, ValueError):
-            raise Http404("Paciente does not exist or invalid ID")
+        except (Paciente.DoesNotExist, ValueError, ValidationError):
+            # Handle the exception here, return JsonResponse with the error message
+            return JsonResponse({'error_message': 'El paciente no tiene un historial registrado.'})
 
         
 
@@ -536,7 +547,7 @@ def Historial_clinico(request):
 
     historial_idpaciente = historiales[0].idpaciente if historiales and historiales.exists() else None
     paciente_idpaciente = datospaciente[0].idpaciente if datospaciente and datospaciente.exists() else None
-
+    mensajes = messages.get_messages(request)
     context = {
         'clientes': clientes,
         'pacientes': pacientes,
@@ -550,11 +561,12 @@ def Historial_clinico(request):
         'paciente_idpaciente': paciente_idpaciente,
         'idpaci': idpaci,
         'idpaciente': idpaciente,  # Pasamos idpaci al contexto
-       
+        'mensajes': mensajes
     }
 
+   
+
     return render(request, 'historial_clinico.html', context)
-    
 
 
 
@@ -605,8 +617,7 @@ def Turnero(request):
     error_message = None
 
     # Vector de horas disponibles
-    horas_disponibles = ['09:00', '09:30', '10:00', '10:30', '11:00', '11:30', '12:00', '12:30',
-                        '13:00', '15:30', '16:00', '16:30', '17:00', '17:30', '18:00', '18:30']
+ 
 
     
     accion = request.POST.get('accion', None)
@@ -754,8 +765,8 @@ def modificar_historialclinico(request, idhistorial, idvacuna, idpeso, idpacient
             paciente.save()
             examen.save()
 
-            messages.success(request, "El historial clinico se modifico exitosamente")
-
+            messages.success(request, "El historial clinico se modificó exitosamente")
+            return redirect('historial_clinico')
     return render(request, 'modificar_historialclinico.html', {'historial': historial, 'vacunas': vacunas, 'peso': peso, 'paciente': paciente, 'especie': especie, 'raza': raza, 'examen': examen, 'datosVacunas': datosVacunas})
    
 
