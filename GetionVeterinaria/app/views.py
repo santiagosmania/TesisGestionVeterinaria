@@ -497,12 +497,10 @@ def Historial_clinico(request):
     datos = Persona.objects.all()
     datospaciente = Paciente.objects.all()
     datoshistorial = Historial.objects.all()
-
     clientes = None
     historiales = None
     pacientes = None
     selected_paciente_id = None
-    vectoridpacientehist = [1, 2, 3, 4, 5]
     paciente = None  # Initialize paciente variable
     idpaci = None  # Initialize idpaci variable
     idpaciente = None  # Initialize selected_value variable
@@ -556,7 +554,6 @@ def Historial_clinico(request):
         'datospaciente': datospaciente,
         'datoshistorial': datoshistorial,
         'paciente': paciente,
-        'vectoridpacientehist': vectoridpacientehist,
         'historial_idpaciente': historial_idpaciente,
         'paciente_idpaciente': paciente_idpaciente,
         'idpaci': idpaci,
