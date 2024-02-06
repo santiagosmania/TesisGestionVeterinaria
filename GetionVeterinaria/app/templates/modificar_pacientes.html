@@ -19,7 +19,7 @@ tiene que coincidir con el value de la lista desplegable -->
 <body>
     <form method="POST" action="{% url 'modificar_pacientes' %}" class="frm">
         {% csrf_token %}
-        <label for="idpaciente">ID Paciente</label>
+        <label for="idpaciente">Paciente</label>
 
         <select name="idpaciente" id="idpaciente">
             {% for dato in datos %}
