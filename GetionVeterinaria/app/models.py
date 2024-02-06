@@ -25,7 +25,7 @@ class Persona(models.Model):
     estado = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.dni
+        return f'{self.dni}'
 
     class Meta:
         db_table = 'clientes'
@@ -77,7 +77,7 @@ class Paciente(models.Model):
     estado = models.CharField(max_length=50)
 
     def __str__(self):
-        return f'{self.idpaciente} '
+        return f'{self.idpaciente}'
 
     class Meta:
         db_table = 'pacientes'

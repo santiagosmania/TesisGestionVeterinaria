@@ -243,6 +243,7 @@ def Modificar_Clientes(request):
 
 def Modificar_Pacientes(request):
     datos = Paciente.objects.all()
+    datospersona = Persona.objects.all()
     datosraza = Raza.objects.all()
     datosespecie = Especie.objects.all()
     paciente = None
@@ -309,7 +310,7 @@ def Modificar_Pacientes(request):
             paciente = None
             messages.success(request, "El paciente se modifico exitosamente")
 
-    return render(request, 'modificar_pacientes.html', {'datos': datos, 'paciente': paciente, 'datosraza': datosraza, 'datosespecie': datosespecie})
+    return render(request, 'modificar_pacientes.html', {'datos': datos, 'paciente': paciente, 'datosraza': datosraza, 'datosespecie': datosespecie, 'datospersona': datospersona})
 
 
 
@@ -492,6 +493,37 @@ def get_historial_info(request, idpaciente):
 
     return JsonResponse(data)
 
+def obtener_pacientes(request):
+    dni_seleccionado = request.GET.get('dni_seleccionado')
+    tipo_paciente = request.GET.get('tipo_paciente')
+
+    if tipo_paciente == '1':
+        # Obtener pacientes del primer tipo
+        pacientes = Paciente.objects.filter(dni__in=Persona.objects.filter(dni=dni_seleccionado))
+        data = [{'id': paciente.idpaciente, 'nombre': paciente.nombre} for paciente in pacientes]
+    elif tipo_paciente == '2':
+        # Obtener pacientes del segundo tipo
+        pacientes = Paciente.objects.filter(dni__in=Persona.objects.filter(dni=dni_seleccionado))
+        data = [{'id': paciente.idpaciente, 'nombre': paciente.nombre} for paciente in pacientes]
+    else:
+        # Si el tipo de paciente no es válido, devolver una lista vacía
+        data = []
+
+    return JsonResponse(data, safe=False)
+
+def obtener_pacientes2(request):
+    dni_seleccionado = request.GET.get('dni_seleccionado')
+   
+
+  
+        # Obtener pacientes del segundo tipo
+    pacientes = Paciente.objects.filter(dni__in=Persona.objects.filter(dni=dni_seleccionado))
+    data = [{'id': paciente.idpaciente, 'nombre': paciente.nombre} for paciente in pacientes]
+  
+        # Si el tipo de paciente no es válido, devolver una lista vacía
+    data = []
+
+    return JsonResponse(data, safe=False)
 
 def Historial_clinico(request):
     datos = Persona.objects.all()

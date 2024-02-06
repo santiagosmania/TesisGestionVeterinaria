@@ -21,7 +21,7 @@ tiene que coincidir con el value de la lista desplegable -->
         <label for="dni">DNI</label>
         <select name="dni" id="dni">
             {% for dato in datos %}
-            <option value="{{ dato.dni }}">{{ dato.dni }}</option>
+            <option value="{{ dato.dni }}"{% if persona and persona.dni == dato.dni %}selected{% endif %}>{{ dato.dni }}</option>
             {% endfor %}
         </select>
 
