@@ -1,23 +1,23 @@
 document.addEventListener('DOMContentLoaded', function () {
-    var dniSelect = document.getElementById('dni');
-    var pacienteSelect = document.getElementById('paciente');
+    var idrazaSelect = document.getElementById('idraza');
+    var idespecieSelect = document.getElementById('idespecie');
 
-    dniSelect.addEventListener('change', function () {
-        var selectedDNI = dniSelect.value;
+    idrazaSelect.addEventListener('change', function () {
+        var selectedRaza = idrazaSelect.value;
 
-        // Realizar una solicitud AJAX para obtener los pacientes asociados al DNI seleccionado
-        fetch('/get_pacientes_by_dni/' + selectedDNI + '/')
+        // Realizar una solicitud AJAX para obtener las especies asociadas a la raza seleccionada
+        fetch('/get_especies_by_raza/' + selectedRaza + '/')
             .then(response => response.json())
             .then(data => {
-                // Limpiar la lista actual de pacientes
-                pacienteSelect.innerHTML = '';
+                // Limpiar la lista actual de especies
+                idespecieSelect.innerHTML = '';
 
-                // Agregar las nuevas opciones de pacientes
-                data.forEach(paciente => {
+                // Agregar las nuevas opciones de especies
+                data.forEach(especie => {
                     var option = document.createElement('option');
-                    option.value = paciente.idpaciente;
-                    option.textContent = paciente.nombreCompleto; // Ajusta esto según la estructura de tus datos
-                    pacienteSelect.appendChild(option);
+                    option.value = especie.idespecie;
+                    option.textContent = especie.especie;
+                    idespecieSelect.appendChild(option);
                 });
             })
             .catch(error => console.error('Error:', error));

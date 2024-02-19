@@ -89,13 +89,13 @@ class Event(models.Model):
     fecha = models.DateField()
     hora = models.TimeField()
     tipo = models.CharField(max_length=50)
-    dni = models.CharField(max_length=10)
+    dni = models.CharField(max_length=20, blank=True)
 
     email = models.CharField(max_length=100)
     celular = models.CharField(max_length=255)
-
+  
     def __str__(self):
-        return f"Event on {self.fecha} at {self.hora} "
+        return f'{self.dni} - {self.fecha} - {self.hora}'
 
     class Meta:
         db_table = 'turnos'

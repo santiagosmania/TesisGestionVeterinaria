@@ -98,3 +98,21 @@ h1{
 .nav .nav-l .nav-link-l:hover{
     color: red;
 }
+
+
+
+.center-content {
+    border: 1px solid black;
+    margin-left: 60%;
+    width: 800px;
+    height: 300px;
+    text-align: center;
+    border: 2px solid black;
+    padding: 20px;
+    margin-top: -20%;
+}
+
+.center-content p {
+    display: inline-block; /* Muestra los párrafos en línea */
+    margin: 0 10px; /* Ajusta el margen entre las horas según sea necesario */
+}

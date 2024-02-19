@@ -24,7 +24,7 @@ $(document).ready(function () {
         if (dayOfWeek == 6) {
             alert("No se permiten turnos los domingos. Por favor, seleccione otro día.");
             $('#timepicker').prop('disabled', true);
-            
+            $('#btnBuscar').prop('disabled', true);
             // Deshabilitar todos los botones de envío los domingos
             $('input[type="submit"]').prop('disabled', true);
         } else {
@@ -32,6 +32,7 @@ $(document).ready(function () {
             
             // Habilitar todos los botones de envío en otros días
             $('input[type="submit"]').prop('disabled', false);
+            $('#btnBuscar').prop('disabled', false);
         }
     });
 });
