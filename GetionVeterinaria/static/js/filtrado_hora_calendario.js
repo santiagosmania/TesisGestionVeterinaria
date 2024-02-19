@@ -1,6 +1,6 @@
 $(document).ready(function () {
-    $('#datepicker').change(function () {
-        var selectedDate = new Date($('#datepicker').val());
+    $('#datepicker_busqueda').change(function () {
+        var selectedDate = new Date($('#datepicker_busqueda').val());
         var dayOfWeek = selectedDate.getDay();
         var horas_disponibles = [];
   
